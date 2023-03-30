@@ -126,56 +126,39 @@ export const LoginBtn = styled.li`
 // 메뉴창 부분 =============================================
 // 메뉴창 컨테이너
 export const MenuContainer = styled.div`
-    width: 500px;
-    height: 300px;
+    width: 200px;
+    height: 250px;
     position: absolute;
     top: 61px;
-    left: calc((100% - 1024px) / 2);
+    left: calc(((100% - 1024px) / 2) - 10px);
     visibility: hidden;
     transition: all 0.5s;
-    border: 3px solid #87CEFA;
+    border: 5px solid #87CEFA;
+    background-color: white;
+    padding: 10px;
     display: flex;
     z-index: 0;
     opacity: 0;
+    border-radius: 20px;
     @media screen and (max-width: 1024px) {
-        width: 80%;
+        width: 60%;
         height: calc(100vh - 50px);
         top: 50px;
         left: 0;
     }
 `
 
-// 메뉴 팝업 왼쪽 박스
-export const MenuBoxLeft = styled.div`
-    width: 50%;
+// 메뉴 팝업 박스
+export const MenuBox = styled.div`
+    width: 100%;
     height: 100%;
-    background-color: #87CEFA;
-    color: white;
-    padding: 30px;
+    color: #00BFFF;
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    gap: 10px;
     @media screen and (max-width: 1024px) {
-        justify-content: flex-start;
         gap: 20px;
-        align-items: center;
-    }
-    `
-
-// 메뉴 팝업 오른쪽 박스
-export const MenuBoxRight = styled.div`
-    width: 50%;
-    height: 100%;
-    background-color: white;
-    color: #87CEFA;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    @media screen and (max-width: 1024px) {
-        justify-content: flex-start;
-        gap: 20px;
-        align-items: center;
     }
 `
 
@@ -183,44 +166,36 @@ export const MenuBoxRight = styled.div`
 export const Cate = styled.span`
     width: 100%;
     height: 40px;
-    line-height: 40px;
     font-size: 1.5rem;
-    position: relative;
-    padding-left: 10px;
+    display: flex;
+    line-height: 40px;
+    gap: 5px;
     &:hover {
         cursor: pointer;
     }
     @media screen and (max-width: 1024px) {
-        width: 120px;
+        width: 80%;
     }
 `
 
-// 선택 표시를 위한 태그
-export const SelectCate = styled.div`
-    width: 100%;
+// 카테고리 안의 이미지
+export const CateImageTr = styled.div`
+    display: block;
+    width: 40px;
     height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    border: 3px solid white;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    display: none;
+    background: url(./images/icons/map_blue.png) center/70% no-repeat;
 `
 
-// 카테고리별 Link 태그
-export const CateValues = styled(Link)`
-    width: 100%;
-    height: 40px;
-    line-height: 40px;
-    font-size: 1.5rem;
-    padding-left: 10px;
-    color: inherit;
-    font-weight: bold;
-    &:hover {
-        text-decoration: underline;
-    }
-    @media screen and (max-width: 1024px) {
-        width: 120px;
-    }
+export const CateImageAdd = styled.div`
+    display: block;
+    width: 40px;
+    height: 100%;
+    background: url(./images/icons/add_blue.png) center/70% no-repeat;
+`
+
+export const CateImageCus = styled.div`
+    display: block;
+    width: 40px;
+    height: 100%;
+    background: url(./images/icons/customer_blue.png) center/70% no-repeat;
 `

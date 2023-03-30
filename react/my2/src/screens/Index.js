@@ -1,28 +1,23 @@
-import ProductList from "../components/ProductList";
-import * as Idx from "../components/styles/IndexStyle";
+import styled from 'styled-components';
+import Banners from "../components/Banners";
 
 const Index = () => {
-    const testData = [1, 2, 3, 4];
-    const testData2 = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    const IndexContainer = styled.main`
+        margin: 90px 0 0;
+        @media screen and (max-width: 1024px) {
+            margin: 50px 0 0;
+        }
+    `
 
     return (
-        <Idx.IndexContainer>
+        <IndexContainer>
             {/* 배너 부분 */}
-            <Idx.BannerContainer>
-
-            </Idx.BannerContainer>
-
-            {/* 신상품 */}
-            <ProductList title="새로 등록된 신상품" data={testData} />
-
-            {/* 많이 찾는 상품 */}
-            <ProductList title="가장 많이 찾는 상품" data={testData2} />
+            <Banners />
 
             {/* 추천 여행지 */}
-            <Idx.RecommendContainer>
 
-            </Idx.RecommendContainer>
-        </Idx.IndexContainer>
+        </IndexContainer>
     );
 
 }

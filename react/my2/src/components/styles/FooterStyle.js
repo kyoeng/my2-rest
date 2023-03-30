@@ -62,6 +62,10 @@ export const GitText = styled.span`
     line-height: 30px;
     color: rgb(150, 150, 150);
     font-size: 1.3rem;
+    @media screen and (max-width: 800px) {
+        margin-left: auto;
+        font-size: 1.1rem;
+    }
 `
 
 export const GitLink = styled.span`
@@ -75,6 +79,9 @@ export const GitLink = styled.span`
     &:hover {
         cursor: pointer;
         opacity: 0.5;
+    }
+    @media screen and (max-width: 800px) {
+        font-size: 1.1rem;
     }
 `
 
