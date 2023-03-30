@@ -13,6 +13,11 @@ export const HeaderContainer = styled.header`
     z-index: 100;
     background-color: #87CEFA;
     box-shadow: 0 1px 1px white;
+    @media screen and (max-width: 1024px) {
+        height: 50px;
+        box-shadow: 0 1px 1px #87CEFA;
+        background-color: white;
+    }
 `
 
 // Header 바로 아래 div 태그
@@ -23,6 +28,9 @@ export const HeaderInnerBox = styled.div`
     justify-content: space-between;
     align-items: center;
     margin: 0 auto;
+    @media screen and (max-width: 1024px) {
+        width: 100%;
+    }
 `
 
 // Logo 역할인 h1 태그
@@ -35,6 +43,9 @@ export const ProjectTitle = styled.h1`
     position: absolute;
     top: 0;
     left: calc((100% - 100px) / 2);
+    @media screen and (max-width: 1024px) {
+        background: url(./images/icons/my2-logo_blue.png) center/70% no-repeat;
+    }
 `
 
 // Link 태그 position
@@ -64,6 +75,11 @@ export const NavBtn = styled.button`
     &:hover {
         cursor: pointer;
     }
+    @media screen and (max-width: 1024px) {
+        width: 30px;
+        height: 30px;
+        background: url(./images/icons/NavBtn_blue.png) center/cover;
+    }
 `
 
 // Header Login, Search 버튼 ul
@@ -73,6 +89,10 @@ export const SearchLoginBox = styled.ul`
     display: flex;
     justify-content: space-between;
     order: 2;
+    @media screen and (max-width: 1024px) {
+        width: 70px;
+        height: 30px;
+    }
 `
 
 // Header Search 버튼 li
@@ -80,6 +100,10 @@ export const SearchBtn = styled.li`
     width: 40px;
     height: 100%;
     background: url(./images/icons/search_btn_white.png) center/80% no-repeat;
+    @media screen and (max-width: 1024px) {
+        width: 30px;
+        background: url(./images/icons/search_btn_blue.png) center/80% no-repeat;
+    }
 `
 
 // Header Login 버튼 li
@@ -87,6 +111,10 @@ export const LoginBtn = styled.li`
     width: 40px;
     height: 100%;
     background: url(./images/icons/login_btn_white.png) center/80% no-repeat;
+    @media screen and (max-width: 1024px) {
+        width: 30px;
+        background: url(./images/icons/login_btn_blue.png) center/80% no-repeat;
+    }
 `
 
 
@@ -109,6 +137,12 @@ export const MenuContainer = styled.div`
     display: flex;
     z-index: 0;
     opacity: 0;
+    @media screen and (max-width: 1024px) {
+        width: 80%;
+        height: calc(100vh - 50px);
+        top: 50px;
+        left: 0;
+    }
 `
 
 // 메뉴 팝업 왼쪽 박스
@@ -121,6 +155,11 @@ export const MenuBoxLeft = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    @media screen and (max-width: 1024px) {
+        justify-content: flex-start;
+        gap: 20px;
+        align-items: center;
+    }
     `
 
 // 메뉴 팝업 오른쪽 박스
@@ -133,6 +172,11 @@ export const MenuBoxRight = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    @media screen and (max-width: 1024px) {
+        justify-content: flex-start;
+        gap: 20px;
+        align-items: center;
+    }
 `
 
 // 카테고리에 대한 태그
@@ -145,6 +189,9 @@ export const Cate = styled.span`
     padding-left: 10px;
     &:hover {
         cursor: pointer;
+    }
+    @media screen and (max-width: 1024px) {
+        width: 120px;
     }
 `
 
@@ -172,5 +219,8 @@ export const CateValues = styled(Link)`
     font-weight: bold;
     &:hover {
         text-decoration: underline;
+    }
+    @media screen and (max-width: 1024px) {
+        width: 120px;
     }
 `

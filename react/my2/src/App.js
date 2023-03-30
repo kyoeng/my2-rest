@@ -4,9 +4,26 @@ import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
 import Header from './components/Header';
 import Index from './screens/Index';
+import { useEffect } from 'react';
+import axios from 'axios';
+import Footer from './components/Footer';
 
 function App() {
-  // 
+  // useEffect(() => {
+  //   axios({
+  //     method: 'get',
+  //     baseURL: 'http://localhost:8888',
+  //     url: '/hello'
+  //   })
+  //     .then((res) => {
+  //       console.log(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
+
+  // common css
   const GlobalStyled = createGlobalStyle`
     ${reset}
     * {
@@ -54,7 +71,7 @@ function App() {
         <Route path='/' element={<Index />} />
       </Routes>
 
-
+      <Footer />
     </Router>
   );
 }

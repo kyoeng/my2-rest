@@ -1,25 +1,45 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import * as Head from "./styles/HeaderStyle";
-import data from "../components/staticCateData.json";
+import data from "../components/staticData/CateData.json";
 
 const Header = () => {
     const MenuBtn = useRef();                           // 메뉴 버튼에 대한 변수
     const Menu = useRef();                              // 메뉴창에 대한 변수
     const [menuOnoff, setMenuOnoff] = useState(false);  // 메뉴 팝업이 나오고 안나오고를 결정한 변수
     const [status, setStatus] = useState("");           // 카테고리의 키워드를 저장할 변수
+    const [resize, setResize] = useState(window.innerWidth);    // 브라우저 너비 저장할 변수
 
     // 카테고리 데이터를 저장할 배열 변수
     let cate = status === "tt" ? data.tt : status === "tc" ? data.tc : status === "others" ? data.others : [];
 
+    // 브라우저 너비 저장 변수 변경 함수
+    function handleResize() { setResize(window.innerWidth); }
+
+    // Resize 시 적용할 이벤트
+    useEffect(() => {
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        }
+    }, []);
+
     // 메뉴 버튼 이벤트
     function onoffMenu() {
         if (menuOnoff) {
-            MenuBtn.current.style.background = 'url(./images/icons/NavBtn_white.png) center/cover';
+            if (window.innerWidth < 1024) {
+                MenuBtn.current.style.background = 'url(./images/icons/NavBtn_blue.png) center/cover';
+            } else {
+                MenuBtn.current.style.background = 'url(./images/icons/NavBtn_white.png) center/cover';
+            }
             Menu.current.style.visibility = 'hidden';
             Menu.current.style.opacity = '0';
             setStatus("");
         } else {
-            MenuBtn.current.style.background = 'url(./images/icons/close_white.png) center/60% no-repeat';
+            if (window.innerWidth < 1024) {
+                MenuBtn.current.style.background = 'url(./images/icons/close_blue.png) center/60% no-repeat';
+            } else {
+                MenuBtn.current.style.background = 'url(./images/icons/close_white.png) center/60% no-repeat';
+            }
             Menu.current.style.visibility = 'visible';
             Menu.current.style.opacity = '1';
         }
@@ -28,15 +48,11 @@ const Header = () => {
     }
 
     // 카테고리 클릭 이벤트
-    function clickCate(code) {
-        setStatus(code);
-    }
+    function clickCate(code) { setStatus(code); }
 
     // 카테고리별 메뉴 그리기
     let outputCate = cate.map((v, i) => {
-        return (
-            <Head.CateValues to="/" key={`values${i}`}>{v}</Head.CateValues>
-        );
+        return <Head.CateValues to="/" key={`values${i}`}>{v}</Head.CateValues>;
     });
 
     return (
@@ -50,7 +66,11 @@ const Header = () => {
                 </Head.ProjectTitle>
 
                 {/* 메뉴 버튼 부분 */}
-                <Head.NavBtn onClick={onoffMenu} ref={MenuBtn} />
+                <Head.NavBtn onClick={onoffMenu} ref={MenuBtn}
+                    style={resize < 1024 && menuOnoff ? { background: 'url(./images/icons/close_blue.png) center/60% no-repeat' } :
+                        resize < 1024 && !menuOnoff ? { background: 'url(./images/icons/NavBtn_blue.png) center/cover' } :
+                            resize >= 1024 && menuOnoff ? { background: 'url(./images/icons/close_white.png) center/60% no-repeat' } :
+                                resize >= 1024 && !menuOnoff ? { background: 'url(./images/icons/NavBtn_white.png) center/cover' } : {}} />
 
                 {/* 검색 및 로그인 버튼 부분 */}
                 <Head.SearchLoginBox>
