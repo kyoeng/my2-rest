@@ -199,3 +199,10 @@ export const CateImageCus = styled.div`
     height: 100%;
     background: url(./images/icons/customer_blue.png) center/70% no-repeat;
 `
+
+export const CateImageList = styled.div`
+    display: block;
+    width: 40px;
+    height: 100%;
+    background: url(./images/icons/list_blue.png) center/70% no-repeat;
+`

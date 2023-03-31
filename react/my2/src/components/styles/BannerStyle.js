@@ -7,6 +7,7 @@ export const BannerContainer = styled.div`
     width: 1024px;
     height: 500px;
     margin: 0 auto;
+    position: relative;
     @media screen and (max-width: 1024px) {
         width: 100%;
         height: 45vw;
@@ -28,7 +29,8 @@ export const Banners = styled.li`
     top: 0;
     left: 0;
     visibility: hidden;
-    transition: all 1s;
+    transition: all 1.5s;
+    opacity: 0;
 `
 
 // 배너 안의 버튼
@@ -43,13 +45,41 @@ export const BannerComment = styled(Link)`
     background-color: #708090;
     position: absolute;
     bottom: 30px;
-    right: 50px;
+    right: 30px;
     @media screen and (max-width: 1024px) {
         width: 100px;
         height: 40px;
-        right: 30px;
         border-radius: 20px;
         font-size: 1.1rem;
         line-height: 40px;
+    }
+`
+
+
+// 배너 위에 슬라이드 버튼을 위한 컨테이너
+export const BtnsContainer = styled.div`
+    height: 40px;
+    position: absolute;
+    left: 30px;
+    bottom: 30px;
+    background-color: white;
+    padding: 0 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border: 3px solid #87CEFA;
+    border-radius: 20px;
+`
+
+// 슬라이드 버튼
+export const Btns = styled.button`
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: #87CEFA;
+    opacity: 0.3;
+    transition: all 1.5s;
+    &:hover {
+        cursor: pointer;
     }
 `

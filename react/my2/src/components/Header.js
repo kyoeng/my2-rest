@@ -79,6 +79,11 @@ const Header = () => {
                     </Head.Cate>
 
                     <Head.Cate>
+                        <Head.CateImageList />
+                        구경하기
+                    </Head.Cate>
+
+                    <Head.Cate>
                         <Head.CateImageAdd />
                         글쓰기
                     </Head.Cate>
