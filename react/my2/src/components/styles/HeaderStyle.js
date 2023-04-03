@@ -100,6 +100,9 @@ export const SearchBtn = styled.li`
     width: 40px;
     height: 100%;
     background: url(./images/icons/search_btn_white.png) center/80% no-repeat;
+    &:hover {
+        cursor: pointer;
+    }
     @media screen and (max-width: 1024px) {
         width: 30px;
         background: url(./images/icons/search_btn_blue.png) center/80% no-repeat;
@@ -205,4 +208,124 @@ export const CateImageList = styled.div`
     width: 40px;
     height: 100%;
     background: url(./images/icons/list_blue.png) center/70% no-repeat;
+`
+
+
+
+
+// 검색창 ==========================
+export const SearchContainer = styled.div`
+    width: 100%;
+    height: 60px;
+    background-color: #87CEFA;
+    z-index: 1000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    visibility: hidden;
+    opacity: 0;
+    @media screen and (max-width: 1024px) {
+        height: 50px;
+        box-shadow: 0 1px 1px #87CEFA;
+        background-color: white;
+    }
+`
+
+export const SearchArea = styled.div`
+    width: 1024px;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @media screen and (max-width: 1024px) {
+        justify-content: center;
+        width: 100%;
+        position: relative;
+    }
+`
+
+// logo 관련
+export const SearchAreaLogoBox = styled.h1`
+    width: 100px;
+    height: 100%;
+    text-indent: -9999em;
+    background: url(./images/icons/my2-logo_white.png) center/90% no-repeat;
+    position: relative;
+    @media screen and (max-width: 1024px) {
+        display: none;
+    }
+`
+
+
+// 검색 input 관련
+export const SearchAreaPostBox = styled.div`
+    width: 500px;
+    height: 40px;
+    position: relative;
+    @media screen and (max-width: 1024px) {
+        width: 70%;
+    }
+`
+
+export const SearchAreaInput = styled.input`
+    width: 100%;
+    height: 100%;
+    border: 2px solid white;
+    background-color: #87CEFA;
+    padding: 5px 20px;
+    color: white;
+    font-size: 1.5rem;
+    &::placeholder {
+        color: white;
+        font-size: 1.5rem;
+    }
+    &:focus {
+        outline: none;
+    }
+    @media screen and (max-width: 1024px) {
+        background-color: white;
+        border: 2px solid #87CEFA;
+        color: #87CEFA;
+        font-size: 1.3rem;
+        &::placeholder {
+            color: #87CEFA;
+            font-size: 1.3rem;
+        }
+    }
+`
+
+export const SearchAreaSubmit = styled.button`
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    background: url(./images/icons/search_btn_white.png) center/80% no-repeat;
+    &:hover {
+        cursor: pointer;
+        background-color: rgba(255, 255, 255, 0.5) ;
+    }
+    @media screen and (max-width: 1024px) {
+        background: url(./images/icons/search_btn_blue.png) center/80% no-repeat;
+    }
+`
+
+
+// 검색창 종료 버튼 관련
+export const SearchAreaClose = styled.button`
+    width: 40px;
+    height: 40px;
+    background: url(./images/icons/close_white.png) center/60% no-repeat;
+    &:hover {
+        cursor: pointer;
+    }
+    @media screen and (max-width: 1024px) {
+        width: 30px;
+        height: 30px;
+        background: url(./images/icons/close_blue.png) center/60% no-repeat;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
 `

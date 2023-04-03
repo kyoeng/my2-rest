@@ -1,4 +1,5 @@
 import Banners from "../components/Banners";
+import { PositionLink } from "../components/styles/HeaderStyle";
 import * as Idx from '../components/styles/IndexStyle';
 import { useEffect } from 'react';
 
@@ -46,6 +47,33 @@ const Index = () => {
         <Idx.IndexMainContainer>
             {/* 배너 부분 */}
             <Banners />
+
+            {/* index 메인 네비 버튼들 */}
+            <Idx.IdxMainCateContainer>
+                <Idx.IdxMainCateBox>
+                    <Idx.IdxMainCateImage src="./images/icons/map_white.png" />
+                    <Idx.IdxMainCateText>여행지 찾기</Idx.IdxMainCateText>
+                    <PositionLink to="/" />
+                </Idx.IdxMainCateBox>
+
+                <Idx.IdxMainCateBox>
+                    <Idx.IdxMainCateImage src="./images/icons/add_white.png" />
+                    <Idx.IdxMainCateText>구경하기</Idx.IdxMainCateText>
+                    <PositionLink to="/" />
+                </Idx.IdxMainCateBox>
+
+                <Idx.IdxMainCateBox>
+                    <Idx.IdxMainCateImage src="./images/icons/customer_white.png" />
+                    <Idx.IdxMainCateText>글쓰기</Idx.IdxMainCateText>
+                    <PositionLink to="/" />
+                </Idx.IdxMainCateBox>
+
+                <Idx.IdxMainCateBox>
+                    <Idx.IdxMainCateImage src="./images/icons/list_white.png" />
+                    <Idx.IdxMainCateText>고객센터</Idx.IdxMainCateText>
+                    <PositionLink to="/" />
+                </Idx.IdxMainCateBox>
+            </Idx.IdxMainCateContainer>
 
             {/* 추천 여행지 */}
             <Idx.RecommendContainer>

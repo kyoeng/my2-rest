@@ -4,7 +4,9 @@ import * as Head from "./styles/HeaderStyle";
 const Header = () => {
     const MenuBtn = useRef();                           // 메뉴 버튼에 대한 변수
     const Menu = useRef();                              // 메뉴창에 대한 변수
-    const [menuOnoff, setMenuOnoff] = useState(false);  // 메뉴 팝업이 나오고 안나오고를 결정한 변수
+    const Search = useRef();                            // 검색창에 대한 변수
+    const [menuOnoff, setMenuOnoff] = useState(false);      // 메뉴 팝업이 나오고 안나오고를 결정할 변수
+    const [searchOnoff, setSearchOnoff] = useState(false);  // 검색 팝업이 나오고 안나오고를 결정할 변수
     const [resize, setResize] = useState(window.innerWidth);    // 브라우저 너비 저장할 변수
 
     // 브라우저 너비 저장 변수 변경 함수
@@ -21,6 +23,7 @@ const Header = () => {
     // 메뉴 버튼 이벤트
     function onoffMenu() {
         if (menuOnoff) {
+            // 닫히는 이벤트
             if (window.innerWidth < 1024) {
                 MenuBtn.current.style.background = 'url(./images/icons/NavBtn_blue.png) center/cover';
             } else {
@@ -28,7 +31,9 @@ const Header = () => {
             }
             Menu.current.style.visibility = 'hidden';
             Menu.current.style.opacity = '0';
+
         } else {
+            // 열리는 이벤트
             if (window.innerWidth < 1024) {
                 MenuBtn.current.style.background = 'url(./images/icons/close_blue.png) center/60% no-repeat';
             } else {
@@ -39,6 +44,22 @@ const Header = () => {
         }
 
         setMenuOnoff(!menuOnoff);
+    }
+
+    // 검색창 이벤트
+    function onoffSearch() {
+        if (searchOnoff) {
+            // 닫히는 이벤트
+            Search.current.style.visibility = 'hidden';
+            Search.current.style.opacity = '0';
+
+        } else {
+            // 열리는 이벤트
+            Search.current.style.visibility = 'visible';
+            Search.current.style.opacity = '1';
+        }
+
+        setSearchOnoff(!searchOnoff);
     }
 
     return (
@@ -60,12 +81,10 @@ const Header = () => {
 
                 {/* 검색 및 로그인 버튼 부분 */}
                 <Head.SearchLoginBox>
-                    <Head.SearchBtn>
-                        <Head.NonePosiLink />
-                    </Head.SearchBtn>
+                    <Head.SearchBtn onClick={onoffSearch} />
 
                     <Head.LoginBtn>
-                        <Head.NonePosiLink />
+                        <Head.NonePosiLink to="/" />
                     </Head.LoginBtn>
                 </Head.SearchLoginBox>
             </Head.HeaderInnerBox>
@@ -94,6 +113,23 @@ const Header = () => {
                     </Head.Cate>
                 </Head.MenuBox>
             </Head.MenuContainer>
+
+            {/* 검색창 */}
+            <Head.SearchContainer ref={Search}>
+                <Head.SearchArea>
+                    <Head.SearchAreaLogoBox>
+                        MY2
+                        <Head.PositionLink to="/" />
+                    </Head.SearchAreaLogoBox>
+
+                    <Head.SearchAreaPostBox>
+                        <Head.SearchAreaInput placeholder="검색어를 입력하세요" />
+                        <Head.SearchAreaSubmit />
+                    </Head.SearchAreaPostBox>
+
+                    <Head.SearchAreaClose onClick={onoffSearch} />
+                </Head.SearchArea>
+            </Head.SearchContainer>
         </Head.HeaderContainer>
     );
 
