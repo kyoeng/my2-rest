@@ -81,6 +81,7 @@ export const RecommendContainer = styled.div`
     margin: 100px auto 0;
     @media screen and (max-width: 1024px) {
         width: 100%;
+        margin: 50px 0 0;
     }
 `
 
@@ -141,6 +142,10 @@ export const ContentContainer = styled.div`
     height: 600px;
     margin: 30px auto 0;
     display: flex;
+    position: relative;
+    @media screen and (max-width: 1024px) {
+        width: 100%;
+    }
 `
 
 // 추천 여행지 정보 박스
@@ -148,10 +153,50 @@ export const ContentBox = styled.div`
     width: 424px;
     height: 100%;
     border: 1px solid black;
+    overflow: auto;
+    @media screen and (max-width: 1024px) {
+        width: 40%;
+    }
+    @media screen and (max-width: 800px) {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
 `
 
 // 추천 여행지 지도 박스
 export const ContentMap = styled.div`
     width: 600px;
     height: 100%;
+    visibility: visible;
+    @media screen and (max-width: 1024px) {
+        width: 60%;
+    }
+    @media screen and (max-width: 800px) {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        visibility: hidden;
+    }
+`
+
+// 지도 리스트 전환 버튼
+export const BoxMapChangeBtn = styled.button`
+    width: 100px;
+    height: 30px;
+    display: none;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: #87CEFA;
+    color: white;
+    z-index: 100;
+    &:hover {
+        cursor: pointer;
+    }
+    @media screen and (max-width: 800px) {
+        display: block;
+    }
 `

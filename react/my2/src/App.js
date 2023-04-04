@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
 import Header from './components/Header';
-import Index from './screens/Index';
+import Main from './screens/Main';
 import { useEffect } from 'react';
 import axios from 'axios';
 import Footer from './components/Footer';
@@ -68,7 +68,7 @@ function App() {
       <Header />
 
       <Routes>
-        <Route path='/' element={<Index />} />
+        <Route path='/' element={<Main />} />
       </Routes>
 
       <Footer />
