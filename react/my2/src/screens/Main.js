@@ -1,15 +1,71 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import Banners from "../components/Banners";
 import { PositionLink } from "../components/styles/HeaderStyle";
 import * as Idx from '../components/styles/MainStyle';
+import { toFlask } from './../components/request/Axioses';
 
 const Index = () => {
     const [resize, setResize] = useState(window.innerWidth);    // 브라우저 너비 저장할 변수
     const [boxMap, setBoxMap] = useState(true);                 // 반응형 적용 시 추천 여행지 화면을 위한 변수
+    const [partyView1, setPartyView1] = useState([]);
+    const [partyView2, setPartyView2] = useState([]);
 
     // 브라우저 너비 저장 변수 변경 함수
     function handleResize() { setResize(window.innerWidth); }
 
+
+    // Flask와 통신 후 view 처리
+    useLayoutEffect(() => {
+        toFlask({
+            url: "/main",
+            method: "get"
+        }).then((res) => {
+            if (res.status === 200) {
+                console.log(res.data.party);
+                const party1 = [];
+                const party2 = [];
+
+                for (let i = 0; i < res.data.party.names.length; i++) {
+                    if (i < 2) {
+                        party1.push(
+                            <Idx.PartyContentValue key={`party_${i}`}>
+                                <Idx.PartyContentData>
+
+                                </Idx.PartyContentData>
+
+                                <Idx.PartyContentImg />
+
+                                <Idx.PartyLink to="/" />
+                            </Idx.PartyContentValue>
+                        )
+                    } else {
+                        party2.push(
+                            <Idx.PartyContentValue key={`party_${i}`}>
+                                <Idx.PartyContentData>
+
+                                </Idx.PartyContentData>
+
+                                <Idx.PartyContentImg />
+
+                                <Idx.PartyLink to="/" />
+                            </Idx.PartyContentValue>
+                        )
+                    }
+                }
+
+                setPartyView1(party1);
+                setPartyView2(party2);
+            } else {
+                console.log(res.data);
+                console.log(res.status);
+            }
+        }).catch((err) => {
+            console.log(err);
+        })
+    }, []);
+
+
+    // 테스트 지도
     useEffect(() => {
         const mapArea = document.getElementById('map'); // 지도를 나타낼 태그 참조
         // 지도의 중심과 크기 레벨
@@ -79,12 +135,12 @@ const Index = () => {
 
 
 
-
-
     return (
         <Idx.IndexMainContainer>
             {/* 배너 부분 */}
             <Banners />
+
+
 
             {/* index 메인 네비 버튼들 */}
             <Idx.IdxMainCateContainer>
@@ -112,6 +168,28 @@ const Index = () => {
                     <PositionLink to="/" />
                 </Idx.IdxMainCateBox>
             </Idx.IdxMainCateContainer>
+
+
+
+            {/* 이번 달의 축제 정보 */}
+            <Idx.PartyContainer>
+                <Idx.PartyTitleBox>
+                    <Idx.PartyTitleLine />
+                    <Idx.PartyTitleText>이 달의 인기 축제들</Idx.PartyTitleText>
+                </Idx.PartyTitleBox>
+
+                <Idx.PartyContentBox>
+                    <Idx.PartyContents>
+                        {partyView1}
+                    </Idx.PartyContents>
+
+                    <Idx.PartyContents>
+                        {partyView2}
+                    </Idx.PartyContents>
+                </Idx.PartyContentBox>
+            </Idx.PartyContainer>
+
+
 
             {/* 추천 여행지 */}
             <Idx.RecommendContainer>
