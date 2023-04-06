@@ -7,8 +7,7 @@ import { toFlask } from './../components/request/Axioses';
 const Index = () => {
     const [resize, setResize] = useState(window.innerWidth);    // 브라우저 너비 저장할 변수
     const [boxMap, setBoxMap] = useState(true);                 // 반응형 적용 시 추천 여행지 화면을 위한 변수
-    const [partyView1, setPartyView1] = useState([]);
-    const [partyView2, setPartyView2] = useState([]);
+    const [partyView, setPartyView1] = useState([]);
 
     // 브라우저 너비 저장 변수 변경 함수
     function handleResize() { setResize(window.innerWidth); }
@@ -22,39 +21,45 @@ const Index = () => {
         }).then((res) => {
             if (res.status === 200) {
                 console.log(res.data.party);
-                const party1 = [];
-                const party2 = [];
+                const party = [];
 
                 for (let i = 0; i < res.data.party.names.length; i++) {
-                    if (i < 2) {
-                        party1.push(
-                            <Idx.PartyContentValue key={`party_${i}`}>
-                                <Idx.PartyContentData>
+                    party.push(
+                        <Idx.PartyContentValue key={`party_${i}`}>
+                            <Idx.PartyContentData>
+                                <Idx.PartyTitle>
+                                    {res.data.party.names[i]}
+                                </Idx.PartyTitle>
 
-                                </Idx.PartyContentData>
+                                <Idx.PartyInfoBox>
+                                    <Idx.PartyInfoName>
+                                        기간
+                                    </Idx.PartyInfoName>
 
-                                <Idx.PartyContentImg />
+                                    <Idx.PartyInfoValue>
+                                        {res.data.party.infos[i].split(", ")[0].slice(5).slice(0, -5)}
+                                    </Idx.PartyInfoValue>
+                                </Idx.PartyInfoBox>
 
-                                <Idx.PartyLink to="/" />
-                            </Idx.PartyContentValue>
-                        )
-                    } else {
-                        party2.push(
-                            <Idx.PartyContentValue key={`party_${i}`}>
-                                <Idx.PartyContentData>
+                                <Idx.PartyInfoBox>
+                                    <Idx.PartyInfoName>
+                                        장소
+                                    </Idx.PartyInfoName>
 
-                                </Idx.PartyContentData>
+                                    <Idx.PartyInfoValue>
+                                        {res.data.party.infos[i].split(", ")[1].slice(4).slice(0, -6)}
+                                    </Idx.PartyInfoValue>
+                                </Idx.PartyInfoBox>
+                            </Idx.PartyContentData>
 
-                                <Idx.PartyContentImg />
+                            <Idx.PartyContentImg src={res.data.party.imgs[i].split(" src=")[1].split(" ")[0].slice(1, -2)} />
 
-                                <Idx.PartyLink to="/" />
-                            </Idx.PartyContentValue>
-                        )
-                    }
+                            <Idx.PartyLink href={`https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=${res.data.party.names[i]}`} target="_blank" />
+                        </Idx.PartyContentValue>
+                    )
                 }
 
-                setPartyView1(party1);
-                setPartyView2(party2);
+                setPartyView1(party);
             } else {
                 console.log(res.data);
                 console.log(res.status);
@@ -179,13 +184,7 @@ const Index = () => {
                 </Idx.PartyTitleBox>
 
                 <Idx.PartyContentBox>
-                    <Idx.PartyContents>
-                        {partyView1}
-                    </Idx.PartyContents>
-
-                    <Idx.PartyContents>
-                        {partyView2}
-                    </Idx.PartyContents>
+                    {partyView}
                 </Idx.PartyContentBox>
             </Idx.PartyContainer>
 

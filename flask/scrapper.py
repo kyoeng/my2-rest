@@ -12,7 +12,7 @@ def scrapParty(month):
     imgBox = soup.find_all('div', attrs={"class" : "data_area"})
     infoBox = soup.find_all('dl', attrs={"class" : "rel_info"})
 
-    names = []  # 축제 이름들을 담을 배연
+    names = []  # 축제 이름들을 담을 배열
     imgs = []   # 축제 이미지 정보를 담을 배열
     infos = []  # 축제 정보들을 담을 배열
 

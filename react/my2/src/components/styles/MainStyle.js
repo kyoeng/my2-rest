@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const IndexMainContainer = styled.main`
@@ -124,41 +123,89 @@ export const PartyTitleText = styled.span`
 
 export const PartyContentBox = styled.div`
     width: 100%;
-    height: 200px;
+    height: 400px;
     margin-top: 30px;
-    position: relative;
-    `
-
-export const PartyContents = styled.div`
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
+    align-content: space-between;
     padding: 12px;
+    @media screen and (max-width: 1024px) {
+        height: 780px;
+        flex-direction: column;
+        align-content: center;
+    }
 `
 
 export const PartyContentValue = styled.div`
     width: 490px;
-    height: 100%;
+    height: 180px;
     display: flex;
     position: relative;
+    @media screen and (max-width: 1024px) {
+        width: 80%;
+        height: 24%;
+        justify-content: center;
+    }
 `
 
 export const PartyContentData = styled.div`
     width: 350px;
     height: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+`
+
+export const PartyTitle = styled.p`
+    width: 100%;
+    height: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #00BFFF;
+    font-weight: bold;
+    @media screen and (max-width: 800px) {
+        font-size: 1.3rem;
+    }
+`
+
+export const PartyInfoBox = styled.p`
+    width: 100%;
+    height: 25%;
+    display: flex;
+    gap: 10px;
+    font-size: 1.3rem;
+    @media screen and (max-width: 800px) {
+        font-size: 1.1rem;
+    }
+`
+
+export const PartyInfoName = styled.span`
+    width: 20%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+
+export const PartyInfoValue = styled.span`
+    width: 75%;
+    height: 100%;
+    display: flex;
+    align-items: center;
 `
 
 export const PartyContentImg = styled.img`
     display: block;
     width: 140px;
     height: 100%;
+    padding: 10px;
 `
 
-export const PartyLink = styled(Link)`
+export const PartyLink = styled.a`
     position: absolute;
     width: 100%;
     height: 100%;
