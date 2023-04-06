@@ -19,7 +19,7 @@ def scrapParty(month):
     # 축제 이름, 이미지 정보 찾아서 담기
     for i in range(len(nameBox)):
         names.append(nameBox[i].find('a').get_text())
-        imgs.append(str(imgBox[i].find('img')))
+        imgs.append(str(imgBox[i].find('img')['src']))
 
     # 축제 정보 찾아서 담기
     for f in infoBox:
@@ -35,10 +35,36 @@ def scrapParty(month):
 
 # 추천 지역 정보 스크래핑 ==========
 def scrapArea(area):
-    url = "https://map.naver.com/v5/search/" + area + "%20가볼만한곳?c=10,0,0,0,dh"
+    url = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=" + area + "+가볼만한곳"
+    res = requests.get(url)
+    soup = BeautifulSoup(res.text, "lxml")
+    
+    titleBox = soup.find_all('div', attrs={"class" : "CYFGv"})
+    navBox = soup.find_all('div', attrs={"class" : "vzxNd"})
+    
+    titles = []     # 장소 이름, 테마들
+    navs = []       # 장소의 간략한 주소들
+
+    for i in range(len(titleBox)):
+        t = []
+        t.append(titleBox[i].find_all('span')[0].get_text())
+        t.append(titleBox[i].find_all('span')[1].get_text())
+        
+        titles.append(t)
+        navs.append(navBox[i].find('em').get_text())
+
+
+    return {
+        "titles" : titles,
+        "navs" : navs
+    }
+
+
+# 지역 주소 찾아오기
+def findPost(area):
+    url = "https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=" + area
     res = requests.get(url)
     soup = BeautifulSoup(res.text, "lxml")
 
+    return soup.find('span', attrs={"class" : "LDgIH"}).get_text()
 
-
-print(scrapParty("4"))

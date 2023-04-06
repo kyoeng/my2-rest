@@ -13,10 +13,10 @@ const Index = () => {
     function handleResize() { setResize(window.innerWidth); }
 
 
-    // Flask와 통신 후 view 처리
+    // Flask와 통신 후 view 처리 ( 축제 부분 )
     useLayoutEffect(() => {
         toFlask({
-            url: "/main",
+            url: "/party",
             method: "get"
         }).then((res) => {
             if (res.status === 200) {
@@ -52,7 +52,7 @@ const Index = () => {
                                 </Idx.PartyInfoBox>
                             </Idx.PartyContentData>
 
-                            <Idx.PartyContentImg src={res.data.party.imgs[i].split(" src=")[1].split(" ")[0].slice(1, -2)} />
+                            <Idx.PartyContentImg src={res.data.party.imgs[i]} />
 
                             <Idx.PartyLink href={`https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=${res.data.party.names[i]}`} target="_blank" />
                         </Idx.PartyContentValue>
@@ -70,8 +70,13 @@ const Index = () => {
     }, []);
 
 
-    // 테스트 지도
+    // Flask와 통신 후 view 처리 ( 추천 부분 )
     useEffect(() => {
+        toFlask({
+            url: '/recommend',
+            method: 'get'
+        })
+
         const mapArea = document.getElementById('map'); // 지도를 나타낼 태그 참조
         // 지도의 중심과 크기 레벨
         const option = {
