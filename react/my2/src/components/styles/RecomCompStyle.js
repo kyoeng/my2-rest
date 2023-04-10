@@ -61,7 +61,7 @@ export const RecommendAreaBox = styled.div`
 `
 
 
-// 추천 여행지 컨텐츠 박스
+// 추천 여행지 컨텐츠 컨테이너너
 export const ContentContainer = styled.div`
     width: 1024px;
     height: 600px;
@@ -77,8 +77,8 @@ export const ContentContainer = styled.div`
 export const ContentBox = styled.div`
     width: 424px;
     height: 100%;
-    border: 1px solid black;
     overflow: auto;
+    border: 2px solid #87CEFA;
     @media screen and (max-width: 1024px) {
         width: 40%;
     }
@@ -87,6 +87,69 @@ export const ContentBox = styled.div`
         top: 0;
         left: 0;
         width: 100%;
+    }
+`
+
+// 추천 여행지 컨텐츠
+export const Contents = styled.div`
+    width: 100%;
+    height: 180px;
+    border-bottom:2px solid #87CEFA;
+    padding: 30px;
+    color: #00BFFF;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    position: relative;
+`
+
+// 추천 여행지명
+export const ContentsTitle = styled.p`
+    width: 100%;
+    height: 50px;
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 50px;
+`
+
+// 추천 여행지 주소
+export const ContensAddr = styled.p`
+    width: 70%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 1.2rem;
+`
+
+// 추천 여행지 지도에서 보기 버튼
+export const ContentsViewBtn = styled.button`
+    width: 80px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    position: absolute;
+    bottom: 45px;
+    right: 30px;
+    box-shadow: 0 0 5px #00BFFF;
+    color: #00BFFF;
+    &:hover {
+        cursor: pointer;
+        opacity: 0.5;
+    }
+`
+
+// 추천 여행지 공유 버튼
+export const ContentsShareBtn = styled.button`
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 45px;
+    right: 30px;
+    background: url(./images/icons/share_blue.png) center/80% no-repeat;
+    box-shadow: 0 0 5px #00BFFF;
+    border-radius: 10px;
+    &:hover {
+        cursor: pointer;
+        opacity: 0.5;
     }
 `
 

@@ -5,7 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC 
+from selenium.webdriver.support import expected_conditions as EC
 
 
 # 해당 달의 축제정보 스크래핑 ==========
@@ -43,53 +43,39 @@ def scrapParty(month):
 def scrapArea(area):
     options = webdriver.ChromeOptions()
     options.add_experimental_option("excludeSwitches", ["enable-logging"])
+    options.add_argument("headless")
 
     driver = webdriver.Chrome(executable_path="C:/Users/82109/AppData/Local/Programs/Python/Python310/chromedriver.exe", options=options)
-    driver.get("https://map.kakao.com//")
+    driver.get("https://map.kakao.com/")
 
-    time.sleep(5)
+    try:
+        # 검색창에 대한 element 찾기 ( 찾으면 다음 코드로 )
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located((By.ID, "search.keyword.query"))
+        )
 
-    driver.find_element(By.ID, "search.keyword.query").send_keys(area + "가볼만한곳")
-    driver.find_element(By.ID, "search.keyword.query").send_keys(Keys.RETURN)
+        # 검색창에 검색할 키워드 입력 후 검색
+        driver.find_element(By.ID, "search.keyword.query").send_keys(area + "가볼만한곳" + Keys.RETURN)
 
-    time.sleep(5)
+        time.sleep(3)
 
-    driver.close()
+        # 장소명, 주소 가져오기
+        titles = []     # 장소명 저장
+        addrs = []      # 주소 저장
 
-    # 카카오맵은 정상 작동함
+        recomTitles = driver.find_elements(By.CLASS_NAME, "link_name")
+        recomAddrs = driver.find_elements(By.CSS_SELECTOR, "#info\.search\.place\.list > li > div.info_item > div.addr > p:nth-child(1)")
 
-    # url = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=" + area + "+가볼만한곳"
-    # res = requests.get(url)
-    # soup = BeautifulSoup(res.text, "lxml")
-    
-    # titleBox = soup.find_all('div', attrs={"class" : "CYFGv"})
-    # navBox = soup.find_all('div', attrs={"class" : "vzxNd"})
-    
-    # titles = []     # 장소 이름, 테마들
-    # navs = []       # 장소의 간략한 주소들
+        for i in range(len(recomTitles)):
+            titles.append(recomTitles[i].text)
+            addrs.append(recomAddrs[i].text)
 
-    # for i in range(len(titleBox)):
-    #     t = []
-    #     t.append(titleBox[i].find_all('span')[0].get_text())
-    #     t.append(titleBox[i].find_all('span')[1].get_text())
-        
-    #     titles.append(t)
-    #     navs.append(navBox[i].find('em').get_text())
-
-
-    # return {
-    #     "titles" : titles,
-    #     "navs" : navs
-    # }
-
-
-# 지역 주소 찾아오기
-def findPost(area):
-    url = "https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=" + area
-    res = requests.get(url)
-    soup = BeautifulSoup(res.text, "lxml")
-
-    return soup.find('span', attrs={"class" : "LDgIH"}).get_text()
-
-
-# scrapArea("강릉")
+        return {
+            "titles" : titles,
+            "addrs" : addrs
+        }
+    except TimeoutError:
+        print("time error")
+        return 500
+    finally:
+        driver.close()

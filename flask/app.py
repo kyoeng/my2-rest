@@ -30,33 +30,32 @@ class Party(Resource):
         return
     
 
+
 @api.route('/recommend')
 class Recommend(Resource):
     def get(self):
         # 추천 지역 랜덤으로 가져오기
         rand = randomArea.selectCity()
-        print(rand)
+
+        # 추천 지역의 추천 여행지 가져오기
         recom = scrapper.scrapArea(rand)
 
-        print(recom['titles'])
-
         # 추천 지역 좌표 구하기
-        latlng = []
-        for item in recom['titles']:
-            print(item[0])
-            print(scrapper.findPost(str(rand) + str(item[0])))
-            print(geo.test(str(scrapper.findPost(str(rand) + str(item[0])))))
-            print(str(rand) + " " + str(item[0]))
-        #     latlng.append(geo.test(str(scrapper.findPost(str(item[0])))))
+        if recom == 500:
+            return 500
+        else:
+            latlng = []
 
-        # print(latlng)
+            for r in recom['addrs']:
+                latlng.append(geo.getLatLng(r))
 
-        return {
-            "recom" : "hi"
-        }
+            return {
+                "rand" : rand,
+                "recom" : recom,
+                "latlng" : latlng
+            }
 
-    def post(self):
-        return
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=8888)
