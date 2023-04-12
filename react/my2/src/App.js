@@ -5,6 +5,8 @@ import reset from 'styled-reset';
 import Header from './components/Header';
 import Main from './screens/Main';
 import Footer from './components/Footer';
+import Login from './screens/Login';
+import Join from './screens/Join';
 
 function App() {
   // common css
@@ -54,6 +56,8 @@ function App() {
 
       <Routes>
         <Route path='/' element={<Main />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/join' element={<Join />} />
       </Routes>
 
       <Footer />

@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import * as Head from "./styles/HeaderStyle";
+import ScrollTop from './commons/ScrollTop';
 
 const Header = () => {
     const MenuBtn = useRef();                           // 메뉴 버튼에 대한 변수
@@ -69,7 +70,7 @@ const Header = () => {
                 {/* 로고 부분 */}
                 <Head.ProjectTitle>
                     MY2
-                    <Head.PositionLink to="/" />
+                    <Head.PositionLink to="/" onClick={ScrollTop} />
                 </Head.ProjectTitle>
 
                 {/* 메뉴 버튼 부분 */}
@@ -84,7 +85,7 @@ const Header = () => {
                     <Head.SearchBtn onClick={onoffSearch} />
 
                     <Head.LoginBtn>
-                        <Head.NonePosiLink to="/" />
+                        <Head.NonePosiLink to="/login" onClick={ScrollTop} />
                     </Head.LoginBtn>
                 </Head.SearchLoginBox>
             </Head.HeaderInnerBox>
@@ -119,7 +120,7 @@ const Header = () => {
                 <Head.SearchArea>
                     <Head.SearchAreaLogoBox>
                         MY2
-                        <Head.PositionLink to="/" />
+                        <Head.PositionLink to="/" onClick={ScrollTop} />
                     </Head.SearchAreaLogoBox>
 
                     <Head.SearchAreaPostBox>

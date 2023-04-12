@@ -10,6 +10,15 @@
     animation: spin 2s linear infinite;
 }
 
+.loaderContainer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: white;
+}
+
 @-webkit-keyframes spin {
     0% {
         -webkit-transform: rotate(0deg);

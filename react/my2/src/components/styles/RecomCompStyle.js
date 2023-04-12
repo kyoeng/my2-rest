@@ -53,23 +53,29 @@ export const RecommendTitleText = styled.span`
 export const RecommendAreaBox = styled.div`
     width: 100%;
     height: 40px;
-    line-height: 40px;
     font-size: 2.5rem;
+    margin-top: 10px;
     display: flex;
     justify-content: center;
-    gap: 10px;
+    align-items: center;
 `
 
 
-// 추천 여행지 컨텐츠 컨테이너너
+// 추천 여행지 컨텐츠 컨테이너
 export const ContentContainer = styled.div`
     width: 1024px;
     height: 600px;
     margin: 30px auto 0;
     display: flex;
     position: relative;
+    box-shadow: 0 0 30px #87CEFA;
     @media screen and (max-width: 1024px) {
         width: 100%;
+        height: 120vw;
+        padding: 30px;
+        padding-top: 0;
+        box-shadow: none;
+        flex-direction: column;
     }
 `
 
@@ -80,13 +86,8 @@ export const ContentBox = styled.div`
     overflow: auto;
     border: 2px solid #87CEFA;
     @media screen and (max-width: 1024px) {
-        width: 40%;
-    }
-    @media screen and (max-width: 800px) {
-        position: absolute;
-        top: 0;
-        left: 0;
         width: 100%;
+        height: 50%;
     }
 `
 
@@ -118,6 +119,7 @@ export const ContensAddr = styled.p`
     height: 30px;
     line-height: 30px;
     font-size: 1.2rem;
+    color: grey;
 `
 
 // 추천 여행지 지도에서 보기 버튼
@@ -139,8 +141,8 @@ export const ContentsViewBtn = styled.button`
 
 // 추천 여행지 공유 버튼
 export const ContentsShareBtn = styled.button`
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     position: absolute;
     top: 45px;
     right: 30px;
@@ -157,34 +159,8 @@ export const ContentsShareBtn = styled.button`
 export const ContentMap = styled.div`
     width: 600px;
     height: 100%;
-    visibility: visible;
     @media screen and (max-width: 1024px) {
-        width: 60%;
-    }
-    @media screen and (max-width: 800px) {
-        position: absolute;
-        top: 0;
-        left: 0;
         width: 100%;
-        visibility: hidden;
-    }
-`
-
-// 지도 리스트 전환 버튼
-export const BoxMapChangeBtn = styled.button`
-    width: 100px;
-    height: 30px;
-    display: none;
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    background-color: #87CEFA;
-    color: white;
-    z-index: 100;
-    &:hover {
-        cursor: pointer;
-    }
-    @media screen and (max-width: 800px) {
-        display: block;
+        height: 50%;
     }
 `

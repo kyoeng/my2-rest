@@ -21,19 +21,19 @@ const Index = () => {
                 </Idx.IdxMainCateBox>
 
                 <Idx.IdxMainCateBox>
-                    <Idx.IdxMainCateImage src="./images/icons/add_white.png" />
+                    <Idx.IdxMainCateImage src="./images/icons/list_white.png" />
                     <Idx.IdxMainCateText>구경하기</Idx.IdxMainCateText>
                     <PositionLink to="/" />
                 </Idx.IdxMainCateBox>
 
                 <Idx.IdxMainCateBox>
-                    <Idx.IdxMainCateImage src="./images/icons/customer_white.png" />
+                    <Idx.IdxMainCateImage src="./images/icons/add_white.png" />
                     <Idx.IdxMainCateText>글쓰기</Idx.IdxMainCateText>
                     <PositionLink to="/" />
                 </Idx.IdxMainCateBox>
 
                 <Idx.IdxMainCateBox>
-                    <Idx.IdxMainCateImage src="./images/icons/list_white.png" />
+                    <Idx.IdxMainCateImage src="./images/icons/customer_white.png" />
                     <Idx.IdxMainCateText>고객센터</Idx.IdxMainCateText>
                     <PositionLink to="/" />
                 </Idx.IdxMainCateBox>

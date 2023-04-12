@@ -1,0 +1,28 @@
+.iwbox {
+    width: 230px;
+    height: 80px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.iwTitle {
+    color: grey;
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.iwLink {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 1.2rem;
+}
+
+.iwLink:hover {
+    text-decoration: underline;
+}

@@ -1,127 +1,125 @@
-import { useState, useLayoutEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./styles/Loader.css";
+import "./styles/MapInfo.css";
 import * as Rc from "./styles/RecomCompStyle";
-import { useEffect } from "react";
 import { toFlask } from "./commons/Axioses";
 
 
 export default function RecomComp() {
-    const [resize, setResize] = useState(window.innerWidth);    // 브라우저 너비 저장할 변수
-    const [boxMap, setBoxMap] = useState(true);                 // 반응형 적용 시 추천 여행지 화면을 위한 변수
     // 추천 여행지 컨텐츠를 저장할 변수
-    const [recomView, setRecomView] = useState(<div className="loader"></div>);
+    const [recomView, setRecomView] = useState(
+        <div className="loaderContainer">
+            <div className="loader"></div>
+        </div>
+    );
+
     // 추천 여행지 지역에 대한 변수
-    const [recomArea, setRecomArea] = useState();
+    const [recomArea, setRecomArea] = useState("");
 
-    // 브라우저 너비 저장 변수 변경 함수
-    function handleResize() { setResize(window.innerWidth); }
-
-    // useLayoutEffect(() => {
-    //     toFlask({
-    //         method: "get",
-    //         url: "/recommend"
-    //     }).then((res) => {
-    //         if (res.status === 200 && res.data !== 500) {
-    //             console.log(res.data)
-
-    //             const recom = [];       // 추천 컨텐츠를 담을 변수
-
-    //             for (let i = 0; i < res.data.recom.titles.length; i++) {
-
-    //             }
+    // 열린 InfoWindow를 저장할 변수 (닫기위한 용도)
+    let beforeIw = useRef(null);
 
 
-    //         } else {
-    //             console.log(res.data);
-    //             console.log(res.status);
-    //         }
-    //     }).catch((err) => {
-    //         console.log(err);
-    //     });
-
-    //     const mapArea = document.getElementById('map'); // 지도를 나타낼 태그 참조
-
-    //     // 지도의 중심과 크기 레벨
-    //     const option = {
-    //         center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-    //         level: 3
-    //     };
-    // }, []);
-
-    // 브라우저 리사이즈 이벤트
+    // Flask 서버로부터 데이터 받아서 View 처리
     useEffect(() => {
-        window.addEventListener('resize', handleResize);
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        }
-    }, []);
+        toFlask({
+            method: "get",
+            url: "/recommend"
+        }).then((res) => {
+            if (res.status === 200 && res.data !== 500) {
+                setRecomView(
+                    <Rc.ContentBox>
+                        {res.data.recom.titles.map((v, i) => {
+                            return (
+                                <Rc.Contents key={`contents_${i}`}>
+                                    <Rc.ContentsTitle>{v}</Rc.ContentsTitle>
+                                    <Rc.ContensAddr>{res.data.recom.addrs[i]}</Rc.ContensAddr>
+                                    <Rc.ContentsShareBtn />
+                                    <Rc.ContentsViewBtn onClick={() => mapClick(res.data.recom.titles[i], res.data.latlng[i], i)}>지도 보기</Rc.ContentsViewBtn>
+                                </Rc.Contents>
+                            );
+                        })}
+                    </Rc.ContentBox>
+                );
 
+                const mapArea = document.getElementById('map'); // 지도를 나타낼 태그 참조
 
-    // Flask와 통신 후 view 처리 ( 추천 부분 )
-    useLayoutEffect(() => {
-        // toFlask({
-        //     url: '/recommend',
-        //     method: 'get'
-        // })
+                // 지도의 중심과 크기 레벨
+                const option = {
+                    center: new window.kakao.maps.LatLng(res.data.randLatLng.lat, res.data.randLatLng.lng),
+                    level: 10
+                };
 
-        const mapArea = document.getElementById('map'); // 지도를 나타낼 태그 참조
-        // 지도의 중심과 크기 레벨
-        const option = {
-            center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-            level: 3
-        };
+                // 지도 생성
+                const map = new window.kakao.maps.Map(mapArea, option);
 
-        // 지도 생성
-        const map = new window.kakao.maps.Map(mapArea, option);
+                // 마커에 대한 정보 저장
+                const position = [];
+                for (let i = 0; i < res.data.recom.titles.length; i++) {
+                    position.push({
+                        title: res.data.recom.titles[i],
+                        latlng: new window.kakao.maps.LatLng(res.data.latlng[i].lat, res.data.latlng[i].lng)
+                    });
+                }
 
-        // 지도의 위치 ( 위도, 경도 ) (마커에 표시할)
-        const position = [
-            {
-                title: '카카오',
-                latlng: new window.kakao.maps.LatLng(33.450705, 126.570677)
-            },
-            {
-                title: '생태연못',
-                latlng: new window.kakao.maps.LatLng(33.450936, 126.569477)
-            },
-            {
-                title: '텃밭',
-                latlng: new window.kakao.maps.LatLng(33.450879, 126.569940)
-            },
-            {
-                title: '근린공원',
-                latlng: new window.kakao.maps.LatLng(33.451393, 126.570738)
+                // 마커 생성
+                let markers = [];
+                for (let i = 0; i < position.length; i++) {
+                    markers.push(new window.kakao.maps.Marker({
+                        map: map,
+                        position: position[i].latlng,
+                        title: position[i].title
+                    }));
+                }
+
+                // 지도 보기의 클릭 이벤트
+                function mapClick(title, latlng, num) {
+                    let center = new window.kakao.maps.LatLng(latlng.lat, latlng.lng);
+                    map.setCenter(center);
+                    map.setLevel(5);
+
+                    let iwbox = document.createElement('div');
+                    iwbox.classList.add('iwbox');
+
+                    let iwTitle = document.createElement('p');
+                    iwTitle.classList.add('iwTitle');
+                    iwTitle.textContent = title;
+
+                    let iwLink = document.createElement('a');
+                    iwLink.classList.add('iwLink');
+                    iwLink.textContent = 'Naver로 해당 여행지 보기';
+                    iwLink.setAttribute('href', 'https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=' + title);
+                    iwLink.setAttribute('target', '_blank');
+
+                    iwbox.append(
+                        iwTitle,
+                        iwLink
+                    );
+
+                    const ifwindow = new window.kakao.maps.InfoWindow({
+                        content: iwbox,
+                        removable: true
+                    });
+
+                    if (beforeIw.current !== null) beforeIw.current.close();
+
+                    ifwindow.open(map, markers[num]);
+
+                    beforeIw.current = ifwindow;
+                }
+
+                // 추천 여행지 지역 변수에 등록
+                setRecomArea(res.data.rand);
+
+            } else {
+                console.log(res.data);
+                console.log(res.status);
             }
-        ]
+        }).catch((err) => {
+            console.log(err);
+        });
 
-        // 마커 생성
-        for (let i = 0; i < position.length; i++) {
-            new window.kakao.maps.Marker({
-                map: map,
-                position: position[i].latlng,
-                title: position[i].title
-            });
-        }
-        // const marker = new window.kakao.maps.Marker({
-        //     position: position,
-        // });
-
-        // 마커 지도에 표시
-        // marker.setMap(map);
-
-        // 클릭 시 나타낼 태그 변수
-        // const test = '<span>test</span>';
-
-        // 해당 정보 태그와 x버튼 표시 true
-        // const ifwindow = new window.kakao.maps.InfoWindow({
-        //     content: test,
-        //     removable: true
-        // });
-
-        // 마커의 클릭 이벤트
-        // window.kakao.maps.event.addListener(marker, 'click', function () {
-        //     ifwindow.open(map, marker);
-        // });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
 
@@ -138,48 +136,8 @@ export default function RecomComp() {
             </Rc.RecommendAreaBox>
 
             <Rc.ContentContainer>
-                <Rc.ContentBox style={resize > 800 ? { visibility: "visible" } : boxMap ? { visibility: "visible" } : { visibility: "hidden" }}>
-                    <Rc.Contents>
-                        <Rc.ContentsTitle>광안리해수욕장</Rc.ContentsTitle>
-                        <Rc.ContensAddr>경기도 안성시 공도읍 만정리 송원길64</Rc.ContensAddr>
-                        <Rc.ContentsShareBtn />
-                        <Rc.ContentsViewBtn>지도 보기</Rc.ContentsViewBtn>
-                    </Rc.Contents>
-                    <Rc.Contents>
-                        <Rc.ContentsTitle>광안리해수욕장</Rc.ContentsTitle>
-                        <Rc.ContensAddr>경기도 안성시 공도읍 만정리 송원길64</Rc.ContensAddr>
-                        <Rc.ContentsShareBtn />
-                        <Rc.ContentsViewBtn>지도 보기</Rc.ContentsViewBtn>
-                    </Rc.Contents>
-                    <Rc.Contents>
-                        <Rc.ContentsTitle>광안리해수욕장</Rc.ContentsTitle>
-                        <Rc.ContensAddr>경기도 안성시 공도읍 만정리 송원길64</Rc.ContensAddr>
-                        <Rc.ContentsShareBtn />
-                        <Rc.ContentsViewBtn>지도 보기</Rc.ContentsViewBtn>
-                    </Rc.Contents>
-                    <Rc.Contents>
-                        <Rc.ContentsTitle>광안리해수욕장</Rc.ContentsTitle>
-                        <Rc.ContensAddr>경기도 안성시 공도읍 만정리 송원길64</Rc.ContensAddr>
-                        <Rc.ContentsShareBtn />
-                        <Rc.ContentsViewBtn>지도 보기</Rc.ContentsViewBtn>
-                    </Rc.Contents>
-                    <Rc.Contents>
-                        <Rc.ContentsTitle>광안리해수욕장</Rc.ContentsTitle>
-                        <Rc.ContensAddr>경기도 안성시 공도읍 만정리 송원길64</Rc.ContensAddr>
-                        <Rc.ContentsShareBtn />
-                        <Rc.ContentsViewBtn>지도 보기</Rc.ContentsViewBtn>
-                    </Rc.Contents>
-                    <Rc.Contents>
-                        <Rc.ContentsTitle>광안리해수욕장</Rc.ContentsTitle>
-                        <Rc.ContensAddr>경기도 안성시 공도읍 만정리 송원길64</Rc.ContensAddr>
-                        <Rc.ContentsShareBtn />
-                        <Rc.ContentsViewBtn>지도 보기</Rc.ContentsViewBtn>
-                    </Rc.Contents>
-                </Rc.ContentBox>
-
-                <Rc.ContentMap id="map" style={resize > 800 ? { visibility: "visible" } : boxMap ? { visibility: "hidden" } : { visibility: "visible" }} />
-
-                <Rc.BoxMapChangeBtn onClick={() => setBoxMap(!boxMap)}>지도로 보기</Rc.BoxMapChangeBtn>
+                {recomView}
+                <Rc.ContentMap id="map" />
             </Rc.ContentContainer>
         </Rc.RecommendContainer>
     )

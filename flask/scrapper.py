@@ -57,7 +57,7 @@ def scrapArea(area):
         # 검색창에 검색할 키워드 입력 후 검색
         driver.find_element(By.ID, "search.keyword.query").send_keys(area + "가볼만한곳" + Keys.RETURN)
 
-        time.sleep(3)
+        time.sleep(2)
 
         # 장소명, 주소 가져오기
         titles = []     # 장소명 저장

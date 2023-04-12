@@ -37,6 +37,9 @@ class Recommend(Resource):
         # 추천 지역 랜덤으로 가져오기
         rand = randomArea.selectCity()
 
+        # 추천 지역의 중심 좌표 가져오기
+        randLatLng = geo.getLatLng(rand)
+
         # 추천 지역의 추천 여행지 가져오기
         recom = scrapper.scrapArea(rand)
 
@@ -51,6 +54,7 @@ class Recommend(Resource):
 
             return {
                 "rand" : rand,
+                "randLatLng" : randLatLng,
                 "recom" : recom,
                 "latlng" : latlng
             }

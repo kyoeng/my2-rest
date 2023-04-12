@@ -133,7 +133,7 @@ export const MenuContainer = styled.div`
     height: 250px;
     position: absolute;
     top: 61px;
-    left: calc(((100% - 1024px) / 2) - 10px);
+    left: calc(((100% - 1024px) / 2));
     visibility: hidden;
     transition: all 0.5s;
     border: 5px solid #87CEFA;
@@ -142,7 +142,7 @@ export const MenuContainer = styled.div`
     display: flex;
     z-index: 0;
     opacity: 0;
-    border-radius: 20px;
+    /* border-radius: 20px; */
     @media screen and (max-width: 1024px) {
         width: 60%;
         height: calc(100vh - 50px);
@@ -159,9 +159,10 @@ export const MenuBox = styled.div`
     padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    justify-content: space-between;
     @media screen and (max-width: 1024px) {
         gap: 20px;
+        justify-content: flex-start;
     }
 `
 
@@ -175,6 +176,7 @@ export const Cate = styled.span`
     gap: 5px;
     &:hover {
         cursor: pointer;
+        box-shadow: 0 0 10px #87CEFA;
     }
     @media screen and (max-width: 1024px) {
         width: 80%;
