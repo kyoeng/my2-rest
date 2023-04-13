@@ -24,7 +24,7 @@ export const JoinForm = styled.div`
     margin-top: 30px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 60px;
 `
 
 // 입력창 입력 박스
@@ -49,6 +49,19 @@ export const JoinValueInfo = styled.span`
     height: 20px;
     line-height: 20px;
     padding: 0 10px;
+`
+
+// 잘못된 입력 시 안내문구를 위한 태그
+export const JoinInputInfo = styled.div`
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    color: red;
+    font-size: 1.2rem;
+    position: absolute;
+    left: 0;
+    bottom: -30px;
+    padding-left: 5px;
 `
 
 
@@ -109,17 +122,17 @@ export const EmailWriteInput = styled.input`
 
 // 이메일 인증번호 요청 버튼
 export const EmailAuthReq = styled.button`
-    width: 50px;
-    height: 85px;
-    border: 2px solid #87CEFA;
-    color: #87CEFA;
-    font-size: 1.4rem;
+    width: 100px;
+    height: 35px;
+    border: 2px solid #00BFFF;
+    color: #00BFFF;
+    font-size: 1.3rem;
+    font-weight: bold;
     position: absolute;
     top: 67.5px;
-    right: -70px;
+    right: -120px;
     &:hover {
         cursor: pointer;
-        font-weight: bold;
     }
 `
 
@@ -127,7 +140,6 @@ export const EmailAuthReq = styled.button`
 export const EmailAuthBtn = styled.button`
     width: 100%;
     height: 40px;
-    line-height: 40px;
     text-align: center;
     background-color: #87CEFA;
     color: white;
