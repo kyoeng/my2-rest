@@ -64,6 +64,30 @@ export const JoinInputInfo = styled.div`
     padding-left: 5px;
 `
 
+// id 중복체크 버튼
+export const IdCheckBtn = styled.button`
+    width: 80px;
+    height: 30px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #00BFFF;
+    color: white;
+    font-weight: bold;
+    &:hover {
+        cursor: pointer;
+    }
+`
+
+// pw 확인 이미지
+export const PwCheckImg = styled.div`
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+`
+
 
 
 // 이메일 인증 컨테이너
