@@ -1,11 +1,8 @@
-package com.kjw.my2.mapper;
-
+package com.kjw.my2.service;
 
 import com.kjw.my2.domain.UserVO;
-import org.apache.ibatis.annotations.Mapper;
 
-@Mapper
-public interface UserMapper {
+public interface UserService {
 
     // ID Check
     int idCheck(String id);

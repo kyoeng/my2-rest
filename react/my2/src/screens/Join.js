@@ -1,5 +1,8 @@
 import { useState, useRef } from "react";
 import * as Ji from "../components/styles/JoinStyle";
+import { toSpringBoot } from "../components/commons/Axioses";
+import { useNavigate } from "react-router-dom";
+
 
 const Join = () => {
     // 회원가입 필수 값에 대한 인식을 위한 변수들
@@ -12,6 +15,7 @@ const Join = () => {
     const [emailId, setEmailId] = useState("");                 // 이메일 아이디
     const [emailSelect, setEmailSelect] = useState("");         // 이메일 Select 값
     const [emailWrite, setEmailWrite] = useState("");           // 직접입력
+    const [inputAuthNum, setInputAuthNum] = useState("");       // 입력받을 인증번호
     const [emailAuthNum, setEmailAuthNum] = useState("");       // 이메일 인증번호
 
     // input values
@@ -22,17 +26,20 @@ const Join = () => {
     const [inputPhone, setInputPhone] = useState("");
     const [inputEmail, setInputEmail] = useState("");
 
+    // 아이디 중복체크 버튼 활성화를 위한 변수
+    const [idCheckBtn, setIdCheckBtn] = useState(false);
+    // 이메일 인증 여부에 대한 상태 값
+    const [emailAuth, setEmailAuth] = useState(false);
+
+    // ID input 태그에 대한 변수
+    const idInputBox = useRef();
     // 안내문구 태그에 대한 배열
     const infoBox = useRef([]);
-
     // 이메일 인증 직접입력에 대한 변수
     const wirteEmail = useRef();
 
-    // 아이디 중복체크 버튼 활성화를 위한 변수
-    const [idCheckBtn, setIdCheckBtn] = useState(false);
-
-    // 이메일 인증 여부에 대한 상태 값
-    const [emailAuth, setEmailAuth] = useState(false);
+    // url 변경을 위한 변수
+    const navi = useNavigate();
 
 
     // id change event
@@ -122,9 +129,36 @@ const Join = () => {
         }
     }
 
+
+
     // Request 요청 (ID Check)
     function reqIdCheck() {
-
+        toSpringBoot({
+            url: "/id-check",
+            method: "get",
+            params: {
+                "id": inputId
+            }
+        }).then((res) => {
+            if (res.status === 200) {
+                console.log(res.data);
+                if (res.data) {
+                    if (window.confirm("사용이 가능한 아이디입니다. 사용하시겠습니까?")) {
+                        idInputBox.current.disabled = true;
+                        setIdOk(true);
+                        setIdCheckBtn(false);
+                    } else {
+                        idInputBox.current.focus();
+                    }
+                } else {
+                    alert("중복되는 아이디입니다.");
+                }
+            } else {
+                alert("다시 시도해주세요.");
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
     }
 
     // Request 요청 (이메일 인증번호 요청)
@@ -135,12 +169,68 @@ const Join = () => {
         if (eID.length < 1 || eSlec.length < 1) {
             alert("이메일을 정상적으로 입력 후 다시 시도해주세요.");
         } else {
-            setInputEmail(eID + "@" + eSlec);
+            let email = eID + "@" + eSlec;
+
+            setInputEmail(email);
+
+            toSpringBoot({
+                url: "/mail-auth",
+                method: "post",
+                data: {
+                    "email": email
+                }
+            }).then((res) => {
+                if (res.status === 200 && res.data !== null) {
+                    alert("인증번호가 발송되었습니다.");
+                    setEmailAuthNum(res.data + "");
+                } else {
+                    alert("인증번호 요청에 실패하였습니다. 확인 후 다시 시도해주세요.");
+                }
+            }).catch((err) => {
+                console.log(err);
+            });
         }
     }
 
 
+    // Email Auth Button
+    function authEmail() {
+        if (emailAuthNum === inputAuthNum) {
+            alert("이메일 인증이 완료되었습니다.");
+            setEmailAuth(true);
+        } else {
+            alert("인증번호가 일치하지 않습니다.");
+        }
+    }
 
+
+    // 회원가입 버튼
+    function letsJoin() {
+        if (idOk && pwOk && nameOk && phoneOk && emailAuth) {
+            toSpringBoot({
+                url: "/join",
+                method: "post",
+                data: {
+                    "id": inputId,
+                    "password": inputPw,
+                    "name": inputName,
+                    "phone": inputPhone,
+                    "email": inputEmail
+                }
+            }).then((res) => {
+                if (res.status === 200 && res.data) {
+                    alert("가입에 성공하였습니다. 로그인 후 이용해주세요.");
+                    return navi("/login", { replace: true });
+                } else {
+                    alert("가입에 실패하였습니다. 다시 시도해주세요.");
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
+        } else {
+            console.log("nope");
+        }
+    }
 
     return (
         <Ji.JoinContainer>
@@ -150,11 +240,11 @@ const Join = () => {
                 {/* 회원가입 입력 사항 */}
                 <Ji.JoinInputContainer>
                     <Ji.JoinInput type="text" value={inputId} onBlur={idFocusOut}
-                        onChange={(e) => idChange(e)} maxLength="15" />
+                        onChange={(e) => idChange(e)} maxLength="15" ref={idInputBox} />
 
                     <Ji.JoinValueInfo>아이디 *</Ji.JoinValueInfo>
 
-                    <Ji.IdCheckBtn onClick={() => console.log("hi")} disabled={idCheckBtn ? false : true}
+                    <Ji.IdCheckBtn onClick={reqIdCheck} disabled={idCheckBtn ? false : true}
                         style={idCheckBtn ? { opacity: '1', cursor: "pointer" } : { opacity: '0.5', cursor: "auto" }}>
                         중복확인
                     </Ji.IdCheckBtn>
@@ -207,17 +297,17 @@ const Join = () => {
                     </Ji.EmailInputContainer>
 
                     <Ji.JoinInputContainer style={{ marginTop: '20px' }}>
-                        <Ji.JoinInput type="text" />
+                        <Ji.JoinInput type="text" onChange={(e) => setInputAuthNum(e.target.value)} />
                         <Ji.JoinValueInfo>인증 번호 *</Ji.JoinValueInfo>
                     </Ji.JoinInputContainer>
 
                     <Ji.EmailAuthReq onClick={reqEmailAuth}>인증번호 요청</Ji.EmailAuthReq>
 
-                    <Ji.EmailAuthBtn>인 증 하 기</Ji.EmailAuthBtn>
+                    <Ji.EmailAuthBtn onClick={authEmail}>인 증 하 기</Ji.EmailAuthBtn>
                 </Ji.EmailAccountBox>
 
                 {/* 가입하기 버튼 */}
-                <Ji.JoinSubmit style={emailAuth ? { display: 'block' } : { display: 'none' }}>가 입 하 기</Ji.JoinSubmit>
+                <Ji.JoinSubmit onClick={letsJoin} style={emailAuth ? { display: 'block' } : { display: 'none' }}>가 입 하 기</Ji.JoinSubmit>
             </Ji.JoinForm>
         </Ji.JoinContainer>
     );
