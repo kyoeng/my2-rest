@@ -7,6 +7,7 @@ import Main from './screens/Main';
 import Footer from './components/Footer';
 import Login from './screens/Login';
 import Join from './screens/Join';
+import MyPage from './screens/MyPage';
 
 function App() {
   // common css
@@ -58,6 +59,7 @@ function App() {
         <Route path='/' element={<Main />} />
         <Route path='/login' element={<Login />} />
         <Route path='/join' element={<Join />} />
+        <Route path='/mypage' element={<MyPage />} />
       </Routes>
 
       <Footer />

@@ -3,11 +3,16 @@ package com.kjw.my2.controller;
 
 import com.kjw.my2.domain.UserVO;
 import com.kjw.my2.service.EmailService;
+import com.kjw.my2.service.JwtService;
 import com.kjw.my2.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -19,6 +24,8 @@ public class UserController {
     // 필드 =====
     private final EmailService emailService;
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     // 메서드 (로그인 필요 X) =====
     /**
@@ -45,7 +52,7 @@ public class UserController {
 
     /**
      * ID 중복확인을 위한 메서드
-     * @param vo UserVO
+     * @param id id
      * @return boolean
      */
     @GetMapping("/id-check")
@@ -67,11 +74,52 @@ public class UserController {
      */
     @PostMapping("/join")
     public boolean join(@RequestBody UserVO vo) {
+        // 패스워드 암호화
+        vo.setPassword(passwordEncoder.encode(vo.getPassword()));
+
         // 회원가입 성공
         if (userService.join(vo) > 0) {
             return true;
 
         // 회원가입 실패
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 로그인을 위한 메서드
+     * @param vo UserVO
+     * @return 성공 시 JWT, UserImage, 실패 시 null
+     */
+    @PostMapping("/login")
+    public Map<String, String> login(@RequestBody UserVO vo) {
+        String pw = vo.getPassword();
+        vo = userService.login(vo);
+
+        if (vo != null) {
+            if (passwordEncoder.matches(pw, vo.getPassword())) {
+                Map<String, String> result = new HashMap<>();
+                result.put("token", jwtService.createToken(vo.getUserId(), vo.getUserRole(), (60 * 1000)));
+                result.put("image", vo.getUserImage());
+                return result;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * React 서버에서 로그인 유지를 위한 체크 메서드
+     * @param request HttpServletRequest
+     * @return boolean
+     */
+    @GetMapping("/check")
+    public boolean check(HttpServletRequest request) {
+        if (jwtService.validToken(request.getHeader(HttpHeaders.AUTHORIZATION).substring(7))) {
+            return true;
         } else {
             return false;
         }

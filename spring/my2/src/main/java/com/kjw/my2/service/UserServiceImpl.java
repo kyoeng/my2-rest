@@ -31,4 +31,14 @@ public class UserServiceImpl implements UserService {
     public int join(UserVO vo) {
         return userMapper.join(vo);
     }
+
+    /**
+     * 로그인
+     * @param vo UserVO
+     * @return UserVO
+     */
+    @Override
+    public UserVO login(UserVO vo) {
+        return userMapper.login(vo);
+    }
 }

@@ -211,11 +211,11 @@ const Join = () => {
                 url: "/join",
                 method: "post",
                 data: {
-                    "id": inputId,
+                    "userId": inputId,
                     "password": inputPw,
-                    "name": inputName,
-                    "phone": inputPhone,
-                    "email": inputEmail
+                    "userName": inputName,
+                    "userPhone": inputPhone,
+                    "userEmail": inputEmail
                 }
             }).then((res) => {
                 if (res.status === 200 && res.data) {

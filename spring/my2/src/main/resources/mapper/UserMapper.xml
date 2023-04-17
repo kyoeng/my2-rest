@@ -4,11 +4,16 @@
 <mapper namespace="com.kjw.my2.mapper.UserMapper">
     <select id="idCheck" resultType="int">
         select COUNT(*) from user
-        where id = #{id}
+        where user_id = #{userId}
     </select>
 
     <insert id="join">
-        insert into user(id, password, name, phone, email)
-        values(#{id}, #{password}, #{name}, #{phone}, #{email})
+        insert into user(user_id, password, user_name, user_phone, user_email)
+        values(#{userId}, #{password}, #{userName}, #{userPhone}, #{userEmail})
     </insert>
+
+    <select id="login" resultType="UserVO">
+        select * from user
+        where user_id = #{userId}
+    </select>
 </mapper>

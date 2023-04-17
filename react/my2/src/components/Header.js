@@ -1,6 +1,9 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useLayoutEffect } from "react";
 import * as Head from "./styles/HeaderStyle";
 import ScrollTop from './commons/ScrollTop';
+import { toSpringBoot } from "./commons/Axioses";
+import { getCookie, removeCookie } from "./commons/Cookie";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Header = () => {
     const MenuBtn = useRef();                           // 메뉴 버튼에 대한 변수
@@ -9,6 +12,41 @@ const Header = () => {
     const [menuOnoff, setMenuOnoff] = useState(false);      // 메뉴 팝업이 나오고 안나오고를 결정할 변수
     const [searchOnoff, setSearchOnoff] = useState(false);  // 검색 팝업이 나오고 안나오고를 결정할 변수
     const [resize, setResize] = useState(window.innerWidth);    // 브라우저 너비 저장할 변수
+
+    // 로그인 상태 여부에 관한 변수
+    const [login, setLogin] = useState(false);
+    const userImage = useRef("");
+    const navi = useNavigate();
+    const location = useLocation();
+
+    // 로그인 상태 확인
+    useLayoutEffect(() => {
+        console.log("hi");
+        toSpringBoot({
+            url: "/check",
+            method: "get",
+            headers: {
+                Authorization: `Bearer ${getCookie("token")}`
+            }
+        }).then((res) => {
+            if (res.data) {
+                userImage.current = getCookie("image");
+                setLogin(true);
+            } else {
+                setLogin(false);
+                if (location.pathname === "/mypage" || location.pathname === "/regi") {
+                    alert("로그인 후 이용해주세요.");
+                    navi("/login", { replace: true });
+                }
+                removeCookie("token");
+                removeCookie("image");
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
+    });
+
+
 
     // 브라우저 너비 저장 변수 변경 함수
     function handleResize() { setResize(window.innerWidth); }
@@ -20,6 +58,8 @@ const Header = () => {
             window.removeEventListener('resize', handleResize);
         }
     }, []);
+
+
 
     // 메뉴 버튼 이벤트
     function onoffMenu() {
@@ -47,6 +87,8 @@ const Header = () => {
         setMenuOnoff(!menuOnoff);
     }
 
+
+
     // 검색창 이벤트
     function onoffSearch() {
         if (searchOnoff) {
@@ -62,6 +104,9 @@ const Header = () => {
 
         setSearchOnoff(!searchOnoff);
     }
+
+
+
 
     return (
         <Head.HeaderContainer>
@@ -85,7 +130,7 @@ const Header = () => {
                     <Head.SearchBtn onClick={onoffSearch} />
 
                     <Head.LoginBtn>
-                        <Head.NonePosiLink to="/login" onClick={ScrollTop} />
+                        <Head.NonePosiLink to={login ? "/mypage" : "/login"} onClick={ScrollTop} style={login ? { background: `url(${userImage.current}) center/cover` } : {}} />
                     </Head.LoginBtn>
                 </Head.SearchLoginBox>
             </Head.HeaderInnerBox>

@@ -13,4 +13,7 @@ public interface UserMapper {
     // JOIN
     int join(UserVO vo);
 
+    // LOGIN
+    UserVO login(UserVO vo);
+
 }
