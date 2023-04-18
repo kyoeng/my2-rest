@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getCookie } from "../components/commons/Cookie";
 import * as My from "../components/styles/MyPageStyle";
+import { toSpringBoot } from "../components/commons/Axioses";
 
 
 
 export default function MyPage() {
     const [navStatus, setNavStatus] = useState(1);
+
+    const [myinfo, setMyinfo] = useState(<div className="loaderContainerFix"><div className="loader"></div></div>);
 
     // select nav style
     const selectNav = {
@@ -13,6 +16,64 @@ export default function MyPage() {
         backgroundColor: "white",
         color: "#87CEFA"
     }
+
+    useEffect(() => {
+        if (navStatus === 2) {
+            console.log("hi");
+            toSpringBoot({
+                url: "/auth/get-info",
+                method: "get",
+                headers: {
+                    Authorization: `Bearer ${getCookie("token")}`
+                },
+                params: {
+                    "userId": getCookie("id")
+                }
+            }).then((res) => {
+                if (res.status === 200 && res.data !== null) {
+                    setMyinfo(
+                        <>
+                            <My.MyInfoBox>
+                                <My.MyInfoInput type="text" value={res.data.userId} readOnly />
+                                <My.MyInfoValue>아이디</My.MyInfoValue>
+                            </My.MyInfoBox>
+
+                            <My.MyInfoBox>
+                                <My.MyInfoInput type="text" value={res.data.userName} readOnly />
+                                <My.MyInfoValue>이름</My.MyInfoValue>
+                            </My.MyInfoBox>
+
+                            <My.MyInfoBox>
+                                <My.MyInfoInput type="password" />
+                                <My.MyInfoValue>패스워드</My.MyInfoValue>
+                            </My.MyInfoBox>
+
+                            <My.MyInfoBox>
+                                <My.MyInfoInput type="password" />
+                                <My.MyInfoValue>패스워드 확인</My.MyInfoValue>
+                            </My.MyInfoBox>
+
+                            <My.MyInfoBox>
+                                <My.MyInfoInput type="text" value={res.data.userPhone} readOnly />
+                                <My.MyInfoValue>휴대폰 번호</My.MyInfoValue>
+                            </My.MyInfoBox>
+
+                            <My.MyInfoBox>
+                                <My.MyInfoInput type="text" value={res.data.userEmail} readOnly />
+                                <My.MyInfoValue>이메일</My.MyInfoValue>
+                            </My.MyInfoBox>
+
+                            <My.MyInfoChangeBtn>내 정보 수정</My.MyInfoChangeBtn>
+                        </>
+                    );
+                } else {
+                    setNavStatus(1);
+                }
+            }).catch((err) => {
+                console.log(err);
+            });
+        }
+    }, [navStatus]);
 
 
     return (
@@ -57,7 +118,8 @@ export default function MyPage() {
 
             {/* 내 정보 */}
             <My.MyInfoContainer style={navStatus === 2 ? { display: "flex" } : { display: "none" }}>
-                <My.MyInfoBox>
+                {myinfo}
+                {/* <My.MyInfoBox>
                     <My.MyInfoInput type="text" readOnly />
                     <My.MyInfoValue>아이디</My.MyInfoValue>
                 </My.MyInfoBox>
@@ -87,7 +149,7 @@ export default function MyPage() {
                     <My.MyInfoValue>이메일</My.MyInfoValue>
                 </My.MyInfoBox>
 
-                <My.MyInfoChangeBtn>내 정보 수정</My.MyInfoChangeBtn>
+                <My.MyInfoChangeBtn>내 정보 수정</My.MyInfoChangeBtn> */}
             </My.MyInfoContainer>
         </My.MyPageContainer>
     );

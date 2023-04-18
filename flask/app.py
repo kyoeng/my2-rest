@@ -60,6 +60,30 @@ class Recommend(Resource):
             }
 
 
+@api.route('/finder/<string:area>')
+class Finder(Resource):
+    def get(self, area):
+        # 넘어온 데이터 중심 좌표 가져오기
+        keyCenter = geo.getLatLng(area)
+
+        # 넘어온 데이터로 추천 여행지 가져오기
+        findContents = scrapper.scrapArea(area)
+
+        if findContents == 500:
+            return 500
+        else:
+            latlng = []
+
+            for f in findContents['addrs']:
+                latlng.append(geo.getLatLng(f))
+
+            return {
+                "center" : keyCenter,
+                "finder" : findContents,
+                "latlng" : latlng
+            }
+
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=8888)

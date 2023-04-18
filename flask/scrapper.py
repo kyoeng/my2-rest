@@ -39,7 +39,7 @@ def scrapParty(month):
     }
 
 
-# 추천 지역 정보 스크래핑 ==========
+# 지역 정보 스크래핑 ==========
 def scrapArea(area):
     options = webdriver.ChromeOptions()
     options.add_experimental_option("excludeSwitches", ["enable-logging"])

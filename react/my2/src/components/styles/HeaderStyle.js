@@ -167,13 +167,14 @@ export const MenuBox = styled.div`
 `
 
 // 카테고리에 대한 태그
-export const Cate = styled.span`
+export const Cate = styled(Link)`
     width: 100%;
     height: 40px;
     font-size: 1.5rem;
     display: flex;
     line-height: 40px;
     gap: 5px;
+    color: #00BFFF;
     &:hover {
         cursor: pointer;
         box-shadow: 0 0 10px #87CEFA;

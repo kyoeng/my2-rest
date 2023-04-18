@@ -19,37 +19,19 @@ const Header = () => {
     const navi = useNavigate();
     const location = useLocation();
 
-    // 로그인 상태 확인
-    useLayoutEffect(() => {
-        console.log("hi");
-        toSpringBoot({
-            url: "/check",
-            method: "get",
-            headers: {
-                Authorization: `Bearer ${getCookie("token")}`
-            }
-        }).then((res) => {
-            if (res.data) {
-                userImage.current = getCookie("image");
-                setLogin(true);
-            } else {
-                setLogin(false);
-                if (location.pathname === "/mypage" || location.pathname === "/regi") {
-                    alert("로그인 후 이용해주세요.");
-                    navi("/login", { replace: true });
-                }
-                removeCookie("token");
-                removeCookie("image");
-            }
-        }).catch((err) => {
-            console.log(err);
-        });
-    });
 
+    // 로그인 상태 확인 ( url 바뀔때 마다 실행 )
+    useLayoutEffect(() => {
+        if (getCookie("token") !== undefined && getCookie("image") !== undefined) {
+            userImage.current = getCookie("image");
+            setLogin(true);
+        }
+    }, [location.pathname]);
 
 
     // 브라우저 너비 저장 변수 변경 함수
     function handleResize() { setResize(window.innerWidth); }
+
 
     // Resize 시 적용할 이벤트
     useEffect(() => {
@@ -85,6 +67,35 @@ const Header = () => {
         }
 
         setMenuOnoff(!menuOnoff);
+    }
+
+
+    // 로그인을 필요로 하는 페이지의 버튼 이벤트
+    function loginedPage(e) {
+        e.preventDefault();
+
+        toSpringBoot({
+            url: "/check",
+            method: "get",
+            headers: {
+                Authorization: `Bearer ${getCookie("token")}`
+            }
+        }).then((res) => {
+            console.log(res);
+            if (res.data) {
+                navi(e.target.getAttribute('href'));
+            } else {
+                setLogin(false);
+                removeCookie("token");
+                removeCookie("image");
+                removeCookie("id");
+                alert("로그인 후 이용해주세요.");
+                navi("/login", { replace: true });
+                ScrollTop();
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
     }
 
 
@@ -130,7 +141,8 @@ const Header = () => {
                     <Head.SearchBtn onClick={onoffSearch} />
 
                     <Head.LoginBtn>
-                        <Head.NonePosiLink to={login ? "/mypage" : "/login"} onClick={ScrollTop} style={login ? { background: `url(${userImage.current}) center/cover` } : {}} />
+                        <Head.NonePosiLink to={login ? "/mypage" : "/login"} onClick={login ? (e) => loginedPage(e) : ScrollTop}
+                            style={login ? { background: `url(${userImage.current}) center/cover` } : {}} />
                     </Head.LoginBtn>
                 </Head.SearchLoginBox>
             </Head.HeaderInnerBox>
@@ -138,22 +150,22 @@ const Header = () => {
             {/* 메뉴창 */}
             <Head.MenuContainer ref={Menu}>
                 <Head.MenuBox>
-                    <Head.Cate>
+                    <Head.Cate to="/finder" onClick={onoffMenu}>
                         <Head.CateImageTr />
                         여행지 찾기
                     </Head.Cate>
 
-                    <Head.Cate>
+                    <Head.Cate to="/watch" onClick={onoffMenu}>
                         <Head.CateImageList />
                         구경하기
                     </Head.Cate>
 
-                    <Head.Cate>
+                    <Head.Cate to="/regi-story" onClick={onoffMenu}>
                         <Head.CateImageAdd />
                         글쓰기
                     </Head.Cate>
 
-                    <Head.Cate>
+                    <Head.Cate to="/service" onClick={onoffMenu}>
                         <Head.CateImageCus />
                         고객센터
                     </Head.Cate>

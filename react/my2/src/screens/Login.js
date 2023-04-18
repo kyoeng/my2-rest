@@ -25,6 +25,7 @@ const Login = () => {
             if (res.status === 200 && res.data !== null) {
                 setCookie("token", res.data.token);
                 setCookie("image", res.data.image);
+                setCookie("id", inputId);
                 navi("/", { replace: true });
                 window.location.reload();
             } else {

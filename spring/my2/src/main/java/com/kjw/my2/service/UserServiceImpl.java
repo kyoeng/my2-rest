@@ -14,7 +14,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 아이디 중복 체크
-     * @param vo UserVO
+     * @param id UserId
      * @return 중복: 1, 중복x: 0
      */
     @Override
@@ -40,5 +40,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserVO login(UserVO vo) {
         return userMapper.login(vo);
+    }
+
+    /**
+     * 내 정보
+     * @param id UserId
+     * @return UserVO
+     */
+    @Override
+    public UserVO getInfo(String id) {
+        return userMapper.getInfo(id);
     }
 }

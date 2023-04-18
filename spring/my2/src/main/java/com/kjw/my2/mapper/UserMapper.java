@@ -16,4 +16,7 @@ public interface UserMapper {
     // LOGIN
     UserVO login(UserVO vo);
 
+    // GET-INFO
+    UserVO getInfo(String id);
+
 }

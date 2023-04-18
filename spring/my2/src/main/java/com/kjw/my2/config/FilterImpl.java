@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-@WebFilter(urlPatterns = {"/auth/*"})
+@WebFilter(urlPatterns = {"/auth/**"})
 public class FilterImpl implements Filter {
 
     private final JwtService jwtService = new JwtService();
@@ -23,10 +23,15 @@ public class FilterImpl implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
-        if (jwtService.validToken(httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION).substring(7))) {
-            chain.doFilter(request, response);
-        } else {
+        try {
+            if (jwtService.validToken(httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION).substring(7))) {
+                chain.doFilter(request, response);
+            } else {
+                httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+            }
+        } catch (Exception e) {
             httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+            log.info("token : {}", httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION));
         }
     }
 }

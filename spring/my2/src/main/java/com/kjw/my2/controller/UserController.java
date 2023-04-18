@@ -27,6 +27,21 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
+
+    /**
+     * React 서버에서 로그인 유지를 위한 체크 메서드
+     * @param request HttpServletRequest
+     * @return boolean
+     */
+    @GetMapping("/check")
+    public boolean check(HttpServletRequest request) {
+        if (jwtService.validToken(request.getHeader(HttpHeaders.AUTHORIZATION).substring(7))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     // 메서드 (로그인 필요 X) =====
     /**
      * 회원가입의 이메일 인증에 관한 메서드
@@ -100,7 +115,7 @@ public class UserController {
         if (vo != null) {
             if (passwordEncoder.matches(pw, vo.getPassword())) {
                 Map<String, String> result = new HashMap<>();
-                result.put("token", jwtService.createToken(vo.getUserId(), vo.getUserRole(), (60 * 1000)));
+                result.put("token", jwtService.createToken(vo.getUserId(), vo.getUserRole(), (30 * 60 * 1000)));
                 result.put("image", vo.getUserImage());
                 return result;
             } else {
@@ -111,17 +126,22 @@ public class UserController {
         }
     }
 
+
+    // 메서드 (로그인 필요) =====
     /**
-     * React 서버에서 로그인 유지를 위한 체크 메서드
-     * @param request HttpServletRequest
-     * @return boolean
+     * 마이페이지의 내 정보를 위한 메서드
+     * @param id UserVO
+     * @return UserVO
      */
-    @GetMapping("/check")
-    public boolean check(HttpServletRequest request) {
-        if (jwtService.validToken(request.getHeader(HttpHeaders.AUTHORIZATION).substring(7))) {
-            return true;
+    @GetMapping("/auth/get-info")
+    public UserVO getInfo(@RequestParam("userId") String id) {
+        UserVO vo = userService.getInfo(id);
+
+        if (vo != null) {
+            vo.setPassword(null);
+            return vo;
         } else {
-            return false;
+            return null;
         }
     }
 
