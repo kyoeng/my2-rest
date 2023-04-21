@@ -3,6 +3,7 @@ import { PositionLink } from "../components/styles/HeaderStyle";
 import Banners from "../components/Banners";
 import PartyComp from "../components/PartyComp";
 import RecomComp from "../components/RecomComp";
+import ScrollTop from '../components/commons/ScrollTop';
 
 const Index = () => {
 
@@ -15,27 +16,31 @@ const Index = () => {
             {/* index 메인 네비 버튼들 */}
             <Idx.IdxMainCateContainer>
                 <Idx.IdxMainCateBox>
-                    <Idx.IdxMainCateImage src="./images/icons/map_white.png" />
+                    <Idx.IdxMainCateImg src='./images/icons/map_blue.png' />
                     <Idx.IdxMainCateText>여행지 찾기</Idx.IdxMainCateText>
-                    <PositionLink to="/" />
+                    <PositionLink to="/finder" onClick={ScrollTop}
+                        style={{ borderRadius: "100px", overflow: "hidden" }} />
                 </Idx.IdxMainCateBox>
 
                 <Idx.IdxMainCateBox>
-                    <Idx.IdxMainCateImage src="./images/icons/list_white.png" />
-                    <Idx.IdxMainCateText>구경하기</Idx.IdxMainCateText>
-                    <PositionLink to="/" />
+                    <Idx.IdxMainCateImg src='./images/icons/list_blue.png' />
+                    <Idx.IdxMainCateText>스토리 보기</Idx.IdxMainCateText>
+                    <PositionLink to="/story" onClick={ScrollTop}
+                        style={{ borderRadius: "100px", overflow: "hidden" }} />
                 </Idx.IdxMainCateBox>
 
                 <Idx.IdxMainCateBox>
-                    <Idx.IdxMainCateImage src="./images/icons/add_white.png" />
-                    <Idx.IdxMainCateText>글쓰기</Idx.IdxMainCateText>
-                    <PositionLink to="/" />
+                    <Idx.IdxMainCateImg src='./images/icons/add_blue.png' />
+                    <Idx.IdxMainCateText>스토리 작성</Idx.IdxMainCateText>
+                    <PositionLink to="/regi-story" onClick={ScrollTop}
+                        style={{ borderRadius: "100px", overflow: "hidden" }} />
                 </Idx.IdxMainCateBox>
 
                 <Idx.IdxMainCateBox>
-                    <Idx.IdxMainCateImage src="./images/icons/customer_white.png" />
-                    <Idx.IdxMainCateText>고객센터</Idx.IdxMainCateText>
-                    <PositionLink to="/" />
+                    <Idx.IdxMainCateImg src='./images/icons/post_blue.png' />
+                    <Idx.IdxMainCateText>게시판으로</Idx.IdxMainCateText>
+                    <PositionLink to="/board" onClick={ScrollTop}
+                        style={{ borderRadius: "100px", overflow: "hidden" }} />
                 </Idx.IdxMainCateBox>
             </Idx.IdxMainCateContainer>
 

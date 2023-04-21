@@ -31,7 +31,6 @@ public class FilterImpl implements Filter {
             }
         } catch (Exception e) {
             httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
-            log.info("token : {}", httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION));
         }
     }
 }

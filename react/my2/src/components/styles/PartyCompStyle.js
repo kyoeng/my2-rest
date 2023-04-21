@@ -3,7 +3,7 @@ import styled from "styled-components"
 
 export const PartyContainer = styled.div`
     width: 1024px;
-    margin: 100px auto 0;
+    margin: 50px auto 0;
     @media screen and (max-width: 1024px) {
         width: 100%;
         margin: 50px 0 0;

@@ -10,9 +10,8 @@ export const HeaderContainer = styled.header`
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 100;
+    z-index: 1000;
     background-color: #87CEFA;
-    box-shadow: 0 1px 1px white;
     @media screen and (max-width: 1024px) {
         height: 50px;
         box-shadow: 0 1px 1px #87CEFA;
@@ -63,6 +62,16 @@ export const NonePosiLink = styled(Link)`
     display: block;
     width: 100%;
     height: 100%;
+`
+
+// 로그인 후 버튼
+export const LoginedBtn = styled.button`
+    display: block;
+    width: 100%;
+    height: 100%;
+    &:hover {
+        cursor: pointer;
+    }
 `
 
 // Header의 Menu 버튼
@@ -130,18 +139,14 @@ export const LoginBtn = styled.li`
 // 메뉴창 컨테이너
 export const MenuContainer = styled.div`
     width: 200px;
-    height: 250px;
     position: absolute;
-    top: 61px;
+    top: 100%;
     left: calc(((100% - 1024px) / 2));
-    visibility: hidden;
-    transition: all 0.5s;
-    border: 5px solid #87CEFA;
+    border: 3px solid #87CEFA;
     background-color: white;
     padding: 10px;
     display: flex;
     z-index: 0;
-    opacity: 0;
     /* border-radius: 20px; */
     @media screen and (max-width: 1024px) {
         width: 60%;
@@ -154,14 +159,13 @@ export const MenuContainer = styled.div`
 // 메뉴 팝업 박스
 export const MenuBox = styled.div`
     width: 100%;
-    height: 100%;
     color: #00BFFF;
     padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 10px;
     @media screen and (max-width: 1024px) {
-        gap: 20px;
         justify-content: flex-start;
     }
 `
@@ -199,11 +203,11 @@ export const CateImageAdd = styled.div`
     background: url(./images/icons/add_blue.png) center/70% no-repeat;
 `
 
-export const CateImageCus = styled.div`
+export const CateImageBoard = styled.div`
     display: block;
     width: 40px;
     height: 100%;
-    background: url(./images/icons/customer_blue.png) center/70% no-repeat;
+    background: url(./images/icons/post_blue.png) center/70% no-repeat;
 `
 
 export const CateImageList = styled.div`
@@ -212,6 +216,54 @@ export const CateImageList = styled.div`
     height: 100%;
     background: url(./images/icons/list_blue.png) center/70% no-repeat;
 `
+
+
+
+
+// 로그인 후 계정 아코디언 부분 =============================================
+export const LoginedMenuContainer = styled.div`
+    position: absolute;
+    top: 100%;
+    right: calc((100% - 1024px) / 2);
+    width: 130px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    background-color: white;
+    border: 2px solid #87CEFA;
+    padding: 0 5px;
+`
+
+export const LoginedMenus = styled(Link)`
+    width: 100%;
+    height: 40px;
+    font-size: 1.5rem;
+    color: #87CEFA;
+    line-height: 40px;
+    text-align: center;
+    &:hover {
+        font-weight: bold;
+    }
+`
+
+export const LogoutBtn = styled.button`
+    width: 100%;
+    height: 40px;
+    font-size: 1.5rem;
+    color: #87CEFA;
+    line-height: 40px;
+    text-align: center;
+    &:hover {
+        cursor: pointer;
+        font-weight: bold;
+    }
+`
+
+
+
+
+
 
 
 

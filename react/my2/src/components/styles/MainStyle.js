@@ -11,61 +11,64 @@ export const IndexMainContainer = styled.main`
 // index 메인 네비 버튼 부분 =============================
 export const IdxMainCateContainer = styled.div`
     width: 1024px;
-    height: 100px;
-    margin: 30px auto 0;
-    background-color: #87CEFA;
-    border-radius: 50px;
-    padding: 15px 50px;
+    height: 200px;
+    margin: 40px auto 0;
     display: flex;
+    justify-content: space-evenly;
     @media screen and (max-width: 1024px) {
         width: 100%;
-        height: 10vw;
-        border-radius: 0;
-        margin: 0;
+        height: 150px;
     }
-    @media screen and (max-width: 850px) {
-        height: 20vw;
-        flex-wrap: wrap;
-        padding: 10px;
+    @media screen and (max-width: 800px) {
+        width: 100%;
+        height: 100px;
     }
 `
 
 export const IdxMainCateBox = styled.div`
-    width: 25%;
+    width: 200px;
     height: 100%;
+    border-radius: 50%;
+    background-color: white;
+    border: 3px solid #87CEFA;
+    overflow: hidden;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    gap: 10px;
     align-items: center;
     position: relative;
-    border-radius: 10px;
     &:hover {
-        box-shadow: 0 0 10px white;
+        box-shadow: 0 0 30px #87CEFA;
+        opacity: 0.7;
     }
-    @media screen and (max-width: 850px) {
-        width: 50%;
-        height: 50%;
-
+    @media screen and (max-width: 1024px) {
+        width: 150px;
+    }
+    @media screen and (max-width: 800px) {
+        width: 100px;
     }
 `
 
-export const IdxMainCateImage = styled.img`
+export const IdxMainCateImg = styled.img`
     display: block;
-    width: 35px;
-    height:35px;
-    @media screen and (max-width: 850px) {
-        width: 20px;
-        height: 20px;
+    width: 50px;
+    height: 50px;
+    @media screen and (max-width: 800px) {
+        width: 30px;
+        height: 30px;
     }
 `
 
-export const IdxMainCateText = styled.span`
-    width: 100px;
-    height: 35px;
-    line-height: 35px;
+export const IdxMainCateText = styled.p`
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 1.7rem;
+    color: #87CEFA;
     text-align: center;
-    font-size: 1.4rem;
-    color: white;
-    @media screen and (max-width: 850px) {
+    font-weight: bold;
+    @media screen and (max-width: 800px) {
         font-size: 1.2rem;
     }
 `

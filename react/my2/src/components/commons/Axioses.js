@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getCookie } from "./Cookie";
 
 
 
@@ -11,4 +12,13 @@ export const toFlask = axios.create({
 // Spring-boot 서버로 요청을 보낼 때 사용
 export const toSpringBoot = axios.create({
     baseURL: "http://192.168.25.54:8080"
+});
+
+
+// 토큰이 필요한 요청을 보낼 때 사용
+export const toSpringWithToken = axios.create({
+    baseURL: "http://192.168.25.54:8080",
+    headers: {
+        Authorization: `Bearer ${getCookie("token")}`
+    }
 });

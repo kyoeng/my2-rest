@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kjw.my2.mapper.BoardMapper">
+    <!-- 공지사항 데이터 가져오기 -->
+    <select id="getPost" resultType="PostBoardVO">
+        select * from post_board
+        order by post_seq desc
+        limit #{startNum}, #{rowsPerPage}
+    </select>
+
+    <!-- 공지사항 총 데이터 갯수 가져오기 -->
+    <select id="totalPost" resultType="int">
+        select count(*) from post_board
+    </select>
+
+
+
+    <!-- 자유게시판 검색 조건 설정 -->
+    <sql id="condition">
+        <if test="keyword != null">
+            <bind name="kwd" value="'%'+keyword+'%'"/>
+        </if>
+
+        <choose>
+            <when test="type == 't'.toString()">
+                where title like #{kwd}
+            </when>
+
+            <when test="type == 'w'.toString()">
+                where user_id like #{kwd}
+            </when>
+
+            <otherwise>
+
+            </otherwise>
+        </choose>
+    </sql>
+
+    <!-- 자유게시판 데이터 가져오기 -->
+    <select id="getFree" resultType="FreeBoardVO">
+        select * from free_board
+        <include refid="condition" />
+        order by free_seq desc
+        limit #{startNum}, #{rowsPerPage}
+    </select>
+
+    <!-- 자유게시판 총 데이터 갯수 가져오기 -->
+    <select id="totalFree" resultType="int">
+        select count(*) from free_board
+        <include refid="condition" />
+    </select>
+</mapper>

@@ -158,6 +158,10 @@ export const EmailAuthReq = styled.button`
     &:hover {
         cursor: pointer;
     }
+    @media screen and (max-width: 800px) {
+        top: 118px;
+        left: 0;
+    }
 `
 
 // 이메일 인증 버튼
