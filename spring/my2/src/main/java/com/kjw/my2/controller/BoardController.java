@@ -1,6 +1,7 @@
 package com.kjw.my2.controller;
 
 
+import com.kjw.my2.domain.FreeBoardVO;
 import com.kjw.my2.domain.forPaging.Criteria;
 import com.kjw.my2.domain.forPaging.PageMaker;
 import com.kjw.my2.domain.forPaging.SearchCri;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,6 +73,29 @@ public class BoardController {
         pageMaker.setCriteria(cri);
         pageMaker.setTotalDataCount(boardService.totalFree(cri));
         result.put("pageMaker", pageMaker);
+
+        return result;
+    }
+
+
+    /**
+     * 자유게시판 디테일 페이지를 위한 메서드
+     * @param vo FreeBoardVO
+     * @return 해당 자유게시판 정보와 댓글 정보
+     */
+    @GetMapping("/free-detail")
+    public Map<String, Object> getDetail(FreeBoardVO vo, @RequestParam(value = "seq") int seq) {
+        Map<String, Object> result = new HashMap<>();
+
+        vo.setFreeSeq(seq);
+        vo = boardService.getFreeDetail(vo);
+
+        if (vo != null) {
+            result.put("detail", vo);
+            result.put("comments", boardService.getComments(vo));
+        } else {
+            return null;
+        }
 
         return result;
     }

@@ -10,6 +10,6 @@ public class CommentsVO {
     private int freeSeq;
     private String cmtContent;
     private String userId;
-    private String refDate;
+    private String regDate;
 
 }

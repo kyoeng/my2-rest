@@ -4,6 +4,7 @@ import { getCookie } from "../components/commons/Cookie";
 import { toSpringBoot } from "../components/commons/Axioses";
 import { useNavigate } from "react-router-dom";
 import ScrollTop from "../components/commons/ScrollTop";
+import "../components/styles/Loader.css";
 
 
 
@@ -23,7 +24,7 @@ export default function Board() {
     const [keyword, setKeyword] = useState(null);           // 검색 키워드
 
     const postValues = useRef([]);                          // 공지사항 내용 태그를 위한 배열
-    const loading = useRef([]);
+    const loading = useRef();
 
     const navi = useNavigate();
 
@@ -48,11 +49,7 @@ export default function Board() {
             setIsAdmin(true);
         }
 
-        if (!boardType) {
-            loading.current[0].style.display = "block";
-        } else {
-            loading.current[1].style.display = "block";
-        }
+        loading.current.style.display = "block";
 
         // 공지사항
         if (!boardType) {
@@ -89,11 +86,7 @@ export default function Board() {
         }
 
 
-        if (!boardType) {
-            loading.current[0].style.display = "none";
-        } else {
-            loading.current[1].style.display = "none";
-        }
+        loading.current.style.display = "none";
     }, [boardType, navi]);
 
 
@@ -265,11 +258,6 @@ export default function Board() {
                             </Bd.PostBox>
                         );
                     })}
-
-
-                    <div className="loaderContainer" ref={(e) => loading.current[0] = e}>
-                        <div className="loader"></div>
-                    </div>
                 </Bd.PostContainer>
 
 
@@ -278,7 +266,7 @@ export default function Board() {
                 <Bd.FreeContainer style={boardType ? { display: "block" } : { display: "none" }}>
                     <Bd.FreeSearchBox>
                         <Bd.FreeSearchType value={selectValue} onChange={(e) => setSelectValue(e.target.value)}>
-                            <option value="t" selected>제목</option>
+                            <option value="t">제목</option>
                             <option value="w">작성자</option>
                         </Bd.FreeSearchType>
 
@@ -301,14 +289,10 @@ export default function Board() {
                                 <Bd.FreeTitle>{v.title}</Bd.FreeTitle>
                                 <Bd.FreeId>{v.userId}</Bd.FreeId>
                                 <Bd.FreeReg>{v.regDate}</Bd.FreeReg>
-                                <Bd.FreeLink />
+                                <Bd.FreeLink to={`/board-detail/${v.freeSeq}`} onClick={ScrollTop} />
                             </Bd.FreeBox>
                         );
                     })}
-
-                    <div className="loaderContainer" ref={(e) => loading.current[1] = e}>
-                        <div className="loader"></div>
-                    </div>
                 </Bd.FreeContainer>
 
 
@@ -321,6 +305,10 @@ export default function Board() {
                     {paging.next ? <Bd.PagingBtn onClick={() => goNext(keyword, type)}>&gt;</Bd.PagingBtn> : <Bd.PagingBtn disabled style={nopeBtn}>&gt;</Bd.PagingBtn>}
                     {paging.next ? <Bd.PagingBtn onClick={() => goLast(keyword, type)}>&gt;&gt;</Bd.PagingBtn> : <Bd.PagingBtn disabled style={nopeBtn}>&gt;&gt;</Bd.PagingBtn>}
                 </Bd.PagingBox>
+
+                <div className="loaderContainerFix" ref={loading}>
+                    <div className="loader"></div>
+                </div>
             </Bd.BoardContainer>
         </>
     );

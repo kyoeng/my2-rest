@@ -10,6 +10,7 @@ import Join from './screens/Join';
 import MyPage from './screens/MyPage';
 import Finder from './screens/Finder';
 import Board from './screens/Board';
+import BoardDetail from './screens/BoardDetail';
 
 function App() {
   // common css
@@ -64,6 +65,7 @@ function App() {
         <Route path='/mypage' element={<MyPage />} />
         <Route path='/finder' element={<Finder />} />
         <Route path='/board' element={<Board />} />
+        <Route path='/board-detail/:seq' element={<BoardDetail />} />
       </Routes>
 
       <Footer />

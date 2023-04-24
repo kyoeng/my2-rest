@@ -39,7 +39,8 @@
 
     <!-- 자유게시판 데이터 가져오기 -->
     <select id="getFree" resultType="FreeBoardVO">
-        select * from free_board
+        select free_seq, title, user_id, reg_date
+        from free_board
         <include refid="condition" />
         order by free_seq desc
         limit #{startNum}, #{rowsPerPage}
@@ -49,5 +50,22 @@
     <select id="totalFree" resultType="int">
         select count(*) from free_board
         <include refid="condition" />
+    </select>
+
+    <!-- 자유게시판 디테일 데이터 가져오기 -->
+    <select id="getFreeDetail" resultType="FreeBoardVO">
+        select *
+        from free_board
+        where free_seq = #{freeSeq}
+    </select>
+
+
+
+    <!-- 댓글 가져오기 -->
+    <select id="getComments" resultType="CommentsVO">
+        select *
+        from comments
+        where free_seq = #{freeSeq}
+        order by cmt_seq asc
     </select>
 </mapper>
