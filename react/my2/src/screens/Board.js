@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import * as Bd from "../components/styles/BoardStyle";
-import { getCookie } from "../components/commons/Cookie";
-import { toSpringBoot } from "../components/commons/Axioses";
+import { getCookie, removeCookie } from "../components/commons/Cookie";
+import { forTokenCheckReq, toSpringBoot, toSpringWithToken } from "../components/commons/Axioses";
 import { useNavigate } from "react-router-dom";
 import ScrollTop from "../components/commons/ScrollTop";
 import "../components/styles/Loader.css";
@@ -11,12 +11,16 @@ import "../components/styles/Loader.css";
 
 export default function Board() {
     const [boardType, setBoardType] = useState(false);      // 공지사항인지 자유게시판인지 구분하는 변수
-    const [isAdmin, setIsAdmin] = useState(false);          // 관리자가 로그인했는지를 위한 변수
 
+    const [isAdmin, setIsAdmin] = useState(false);          // 관리자가 로그인했는지를 위한 변수
     const [PostBoard, setPostBoard] = useState([]);         // 공지사항 데이터를 보여줄 배열
+
     const [FreeBoard, setFreeBoard] = useState([]);         // 자유게시판 데이터를 보여줄 배열
 
-    const [selectValue, setSelectValue] = useState("t");     // 검색 select 태그 value (type)
+    const [postRegiOnOff, setPostRegiOnOff] = useState(false);      // 공지사항 등록 화면의 유무를 결정할 변수
+    const [freeRegiOnOff, setFreeRegiOnOff] = useState(false);      // 자유게시글 등록 화면의 유무를 결정할 변수
+
+    const [selectValue, setSelectValue] = useState("t");    // 검색 select 태그 value (type)
     const [inputValue, setInputValue] = useState("");       // 검색 input 태그 value  (keyword)
 
     const [paging, setPaging] = useState({});               // 페이징을 위한 객체
@@ -24,12 +28,20 @@ export default function Board() {
     const [keyword, setKeyword] = useState(null);           // 검색 키워드
 
     const postValues = useRef([]);                          // 공지사항 내용 태그를 위한 배열
-    const loading = useRef();
+    const loading = useRef();                               // 로딩 화면
+
+    // 게시글 등록을 위한 input 내용 변수
+    const [postTitleInput, setPostTitleInput] = useState("");
+    const [postContentInput, setPostContentInput] = useState("");
+    const [freeTitleInput, setFreeTitleInput] = useState("");
+    const [freeContentInput, setFreeContentInput] = useState("");
 
     const navi = useNavigate();
 
 
-    // 공지사항 버튼 이벤트트
+
+
+    // 공지사항 버튼 이벤트
     function postClick(e, num) {
         let content = postValues.current[num];
 
@@ -43,7 +55,7 @@ export default function Board() {
     }
 
 
-    // 로그인 대상자가 관리자인지 확인하고 해당하는 데이터 가져오기
+    // 렌더링 시 유저 확인 및 데이터 가져오기
     useLayoutEffect(() => {
         if (getCookie("id") === "admin") {
             setIsAdmin(true);
@@ -51,7 +63,6 @@ export default function Board() {
 
         loading.current.style.display = "block";
 
-        // 공지사항
         if (!boardType) {
             toSpringBoot({
                 method: "get",
@@ -215,6 +226,82 @@ export default function Board() {
 
 
 
+    // 글 등록 열기 클릭 이벤트
+    function clickRegi() {
+        forTokenCheckReq().then((res) => {
+            if (res.status === 200 && res.data) {
+                if (!boardType) {
+                    setPostRegiOnOff(true);
+                } else {
+                    setFreeRegiOnOff(true);
+                }
+            } else {
+                alert("로그인 후 이용하세요.");
+                ScrollTop();
+                if (getCookie("token") !== null || getCookie("token") !== undefined) {
+                    removeCookie("token");
+                    removeCookie("id");
+                    removeCookie("image");
+                }
+                navi("/login", { replace: true });
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
+
+    // 게시글 등록 요청
+    function reqRegiBoard(url, data) {
+        toSpringWithToken({
+            method: "post",
+            url: url,
+            data: data
+        }).then((res) => {
+            if (res.status === 200 && res.data) {
+                alert("등록이 완료되었습니다.");
+                window.location.reload();
+            } else {
+                alert("다시 시도해주세요.");
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
+
+
+
+    // 자유게시글 등록
+    function RegiBoard() {
+        // 요청 url
+        let url;
+        // 함께 보낼 데이터 
+        let data = {
+            "title": "",
+            "content": ""
+        };
+
+        if (!boardType) {
+            // 공지사항 등록
+            url = "/regi-post";
+            data.title = postTitleInput;
+            data.content = postContentInput;
+        } else {
+            // 자유게시판 등록
+            url = "/regi-free";
+            data.title = freeTitleInput;
+            data.content = freeContentInput;
+            data.userId = getCookie("id");
+        }
+
+        if (data.title !== "" && data.content !== "") {
+            reqRegiBoard(url, data);
+        } else {
+            alert("입력사항을 확인해주세요.");
+        }
+    }
+
+
+
 
 
     return (
@@ -238,7 +325,7 @@ export default function Board() {
 
                 {/* 공지사항 부분 */}
                 <Bd.PostContainer style={boardType ? { display: "none" } : { display: "block" }}>
-                    <Bd.PostRegBtn style={isAdmin ? { display: "block" } : { display: "none" }}>등록하기</Bd.PostRegBtn>
+                    <Bd.PostRegBtn onClick={clickRegi} style={isAdmin ? { display: "block" } : { display: "none" }}>등록하기</Bd.PostRegBtn>
 
                     <Bd.PostInfoBar>
                         <Bd.PostInfoTitle>제목</Bd.PostInfoTitle>
@@ -258,12 +345,38 @@ export default function Board() {
                             </Bd.PostBox>
                         );
                     })}
+
+
+                    {/* 공지사항 등록 */}
+                    <Bd.RegiContainer style={postRegiOnOff ? { display: "block" } : { display: "none" }}>
+                        <Bd.RegiBox>
+                            <Bd.RegiTitle>공지사항 등록하기</Bd.RegiTitle>
+
+                            <Bd.InputContainer style={{ height: "50px" }} >
+                                <Bd.Input value={postTitleInput} onChange={(e) => setPostTitleInput(e.target.value)}
+                                    placeholder="게시글의 제목을 입력해주세요." />
+                                <Bd.ValueInfo>제목</Bd.ValueInfo>
+                            </Bd.InputContainer>
+
+                            <Bd.InputContainer style={{ height: "200px" }}>
+                                <Bd.TextArea value={postContentInput} onChange={(e) => setPostContentInput(e.target.value)}
+                                    placeholder="게시글의 내용을 입력해주세요." />
+                                <Bd.ValueInfo>내용</Bd.ValueInfo>
+                            </Bd.InputContainer>
+
+                            <Bd.RegiButton onClick={RegiBoard}>등록하기</Bd.RegiButton>
+                        </Bd.RegiBox>
+
+                        <Bd.RegiClose onClick={() => setPostRegiOnOff(false)} />
+                    </Bd.RegiContainer>
                 </Bd.PostContainer>
 
 
 
                 {/* 자유게시판 부분 */}
                 <Bd.FreeContainer style={boardType ? { display: "block" } : { display: "none" }}>
+                    <Bd.FreeRegBtn onClick={clickRegi}>글 등록</Bd.FreeRegBtn>
+
                     <Bd.FreeSearchBox>
                         <Bd.FreeSearchType value={selectValue} onChange={(e) => setSelectValue(e.target.value)}>
                             <option value="t">제목</option>
@@ -293,6 +406,31 @@ export default function Board() {
                             </Bd.FreeBox>
                         );
                     })}
+
+
+
+                    {/* 자유게시판 등록 */}
+                    <Bd.RegiContainer style={freeRegiOnOff ? { display: "block" } : { display: "none" }}>
+                        <Bd.RegiBox>
+                            <Bd.RegiTitle>자유게시판 등록하기</Bd.RegiTitle>
+
+                            <Bd.InputContainer style={{ height: "50px" }} >
+                                <Bd.Input value={freeTitleInput} onChange={(e) => setFreeTitleInput(e.target.value)}
+                                    placeholder="게시글의 제목을 입력해주세요." />
+                                <Bd.ValueInfo>제목</Bd.ValueInfo>
+                            </Bd.InputContainer>
+
+                            <Bd.InputContainer style={{ height: "200px" }}>
+                                <Bd.TextArea value={freeContentInput} onChange={(e) => setFreeContentInput(e.target.value)}
+                                    placeholder="게시글의 내용을 입력해주세요." />
+                                <Bd.ValueInfo>내용</Bd.ValueInfo>
+                            </Bd.InputContainer>
+
+                            <Bd.RegiButton onClick={RegiBoard}>등록하기</Bd.RegiButton>
+                        </Bd.RegiBox>
+
+                        <Bd.RegiClose onClick={() => setFreeRegiOnOff(false)} />
+                    </Bd.RegiContainer>
                 </Bd.FreeContainer>
 
 
@@ -305,6 +443,7 @@ export default function Board() {
                     {paging.next ? <Bd.PagingBtn onClick={() => goNext(keyword, type)}>&gt;</Bd.PagingBtn> : <Bd.PagingBtn disabled style={nopeBtn}>&gt;</Bd.PagingBtn>}
                     {paging.next ? <Bd.PagingBtn onClick={() => goLast(keyword, type)}>&gt;&gt;</Bd.PagingBtn> : <Bd.PagingBtn disabled style={nopeBtn}>&gt;&gt;</Bd.PagingBtn>}
                 </Bd.PagingBox>
+
 
                 <div className="loaderContainerFix" ref={loading}>
                     <div className="loader"></div>

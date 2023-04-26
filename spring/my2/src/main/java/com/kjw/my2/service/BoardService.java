@@ -29,4 +29,17 @@ public interface BoardService {
     // 댓글 가져오기
     List<CommentsVO> getComments(FreeBoardVO vo);
 
+
+
+
+
+    // 공지사항 등록
+    int regiPost(PostBoardVO vo);
+
+    // 자유게시판 등록
+    int regiFree(FreeBoardVO vo);
+
+    // 댓글 등록
+    int regiCmt(CommentsVO vo);
+
 }

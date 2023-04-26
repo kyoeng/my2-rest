@@ -10,7 +10,7 @@ export const DetailContainer = styled.div`
 
 // 디테일 타이틀
 export const DetailTitle = styled.h2`
-    width: 600px;
+    width: 800px;
     height: 60px;
     line-height: 60px;
     color: #00BFFF;
@@ -37,7 +37,7 @@ export const DetailTitleInfo = styled.span`
 
 // 디테일 내용 박스
 export const DetailBoardBox = styled.div`
-    width: 600px;
+    width: 800px;
     display: flex;
     flex-direction: column;
     margin: 50px auto 0;
@@ -88,7 +88,7 @@ export const DetailBoardContentBox = styled.div`
 
 // 댓글
 export const DetailCommentsBox = styled.div`
-    width: 600px;
+    width: 800px;
     margin: 80px auto 0;
     display: flex;
     flex-direction: column;
@@ -109,8 +109,8 @@ export const DetailComments = styled.div`
     width: 100%;
     font-size: 1.5rem;
     color: gray;
-    padding: 10px;
-    border-bottom: 1px solid #87CEFA;
+    padding: 20px 10px;
+    border-bottom: 2px solid #87CEFA;
 `
 
 

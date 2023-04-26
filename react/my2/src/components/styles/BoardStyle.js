@@ -176,6 +176,20 @@ export const FreeContainer = styled.div`
     position: relative;
 `
 
+export const FreeRegBtn = styled.button`
+    position: absolute;
+    top: 40px;
+    right: 0;
+    width: 80px;
+    height: 40px;
+    background-color: #87CEFA;
+    color: white;
+    &:hover {
+        cursor: pointer;
+        opacity: 0.5;
+    }
+`
+
 // 자유게시판 바
 export const FreeInfoBar = styled.div`
     width: 100%;
@@ -336,6 +350,96 @@ export const FreeSearchBtn = styled.button`
     font-size: 1.4rem;
     &:hover {
         cursor: pointer;
+    }
+`
+
+// 자유게시판 등록
+export const RegiContainer = styled.div`
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    background-color: rgba(0, 0, 0, 0.5);
+`
+
+export const RegiBox = styled.div`
+    width: 500px;
+    height: 500px;
+    position: absolute;
+    top: calc((100% - 500px) / 2);
+    left: calc((100% - 500px) / 2);
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    justify-content: space-between;
+`
+
+export const RegiTitle = styled.h3`
+    width: 100%;
+    height: 50px;
+    border-bottom: 3px solid #87CEFA;
+    color: #00BFFF;
+    font-size: 2.2rem;
+    line-height: 50px;
+    padding-left: 10px;
+    font-weight: bold;
+`
+
+export const InputContainer = styled.div`
+    width: 100%;
+    position: relative;
+`
+
+export const Input = styled.input`
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+`
+
+export const TextArea = styled.textarea`
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    resize: none;
+`
+
+export const ValueInfo = styled.span`
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    font-size: 1.4rem;
+    background-color: white;
+    height: 20px;
+    line-height: 20px;
+    padding: 0 10px;
+`
+
+export const RegiButton = styled.button`
+    width: 100%;
+    height: 60px;
+    background-color: #87CEFA;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    &:hover {
+        cursor: pointer;
+        opacity: 0.5;
+    }
+`
+
+export const RegiClose = styled.button`
+    width: 40px;
+    height: 40px;
+    background: url(./images/icons/close_white.png) center/cover;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    &:hover {
+        cursor: pointer;
+        opacity: 0.5;
     }
 `
 

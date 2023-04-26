@@ -1,17 +1,16 @@
 package com.kjw.my2.controller;
 
 
+import com.kjw.my2.domain.CommentsVO;
 import com.kjw.my2.domain.FreeBoardVO;
+import com.kjw.my2.domain.PostBoardVO;
 import com.kjw.my2.domain.forPaging.Criteria;
 import com.kjw.my2.domain.forPaging.PageMaker;
 import com.kjw.my2.domain.forPaging.SearchCri;
 import com.kjw.my2.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -103,5 +102,35 @@ public class BoardController {
 
 
     // 메서드 (로그인 필요) =====
+
+    /**
+     * 공지사항 등록을 위한 메서드
+     * @param vo PostBoardVO
+     * @return Boolean
+     */
+    @PostMapping("/auth/regi-post")
+    public Boolean regiPost(@RequestBody PostBoardVO vo) {
+        return boardService.regiPost(vo) > 0;
+    }
+
+    /**
+     * 자유게시판 등록을 위한 메서드
+     * @param vo FreeBoardVO
+     * @return Boolean
+     */
+    @PostMapping("/auth/regi-free")
+    public Boolean regiFree(@RequestBody FreeBoardVO vo) {
+        return boardService.regiFree(vo) > 0;
+    }
+
+    /**
+     * 댓글 등록
+     * @param vo CommentsVO
+     * @return Boolean
+     */
+    @PostMapping("/auth/regi-cmt")
+    public Boolean regiCmt(@RequestBody CommentsVO vo) {
+        return boardService.regiCmt(vo) > 0;
+    }
 
 }

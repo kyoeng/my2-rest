@@ -60,7 +60,6 @@
     </select>
 
 
-
     <!-- 댓글 가져오기 -->
     <select id="getComments" resultType="CommentsVO">
         select *
@@ -68,4 +67,27 @@
         where free_seq = #{freeSeq}
         order by cmt_seq asc
     </select>
+
+
+
+
+
+
+    <!-- 공지사항 등록 -->
+    <insert id="regiPost">
+        insert into post_board(title, content)
+        value(#{title}, #{content})
+    </insert>
+
+    <!-- 자유게시판 등록 -->
+    <insert id="regiFree">
+        insert into free_board(title, content, user_id)
+        value(#{title}, #{content}, #{userId})
+    </insert>
+
+    <!-- 댓글 등록 -->
+    <insert id="regiCmt">
+        insert into comments(free_seq, cmt_content, user_id)
+        value(#{freeSeq}, #{cmtContent}, #{userId})
+    </insert>
 </mapper>

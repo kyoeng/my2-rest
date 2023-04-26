@@ -2,7 +2,8 @@ import { useLayoutEffect, useRef, useState } from "react";
 import * as De from "../components/styles/BoardDetailStyle";
 import { useParams } from "react-router-dom";
 import "../components/styles/Loader.css";
-import { toSpringBoot } from "../components/commons/Axioses";
+import { forTokenCheckReq, toSpringBoot, toSpringWithToken } from "../components/commons/Axioses";
+import { getCookie } from "../components/commons/Cookie";
 
 
 
@@ -18,13 +19,19 @@ export default function BoardDetail() {
         "regDate": ""
     });
 
+    // 댓글 데이터를 위한 변수
+    const [cmts, setCmts] = useState([]);
+
     // 댓글 작성 textarea 내용을 위한 변수
     const [comments, setComments] = useState("");
 
     const loader = useRef();        // 로딩 화면
 
 
-    useLayoutEffect(() => {
+
+    function req(seq) {
+        loader.current.style.display = "block";
+
         toSpringBoot({
             method: "get",
             url: `/free-detail?seq=${seq}`
@@ -36,13 +43,57 @@ export default function BoardDetail() {
                     "userId": res.data.detail.userId,
                     "regDate": res.data.detail.regDate
                 });
+                setCmts(res.data.comments);
             }
         }).catch((err) => {
             console.log(err);
         });
 
         loader.current.style.display = "none";
+    }
+
+
+    useLayoutEffect(() => {
+        req(seq);
     }, [seq]);
+
+
+    // 댓글 등록
+    function regCmt() {
+        forTokenCheckReq({}).then((res) => {
+            if (res.data) {
+                if (comments !== "") {
+                    toSpringWithToken({
+                        url: "/regi-cmt",
+                        method: "post",
+                        data: {
+                            "freeSeq": seq,
+                            "cmtContent": comments,
+                            "userId": getCookie("id")
+                        }
+                    }).then((res) => {
+                        if (res.status === 200 && res.data) {
+                            alert("댓글이 등록되었습니다.");
+                            setComments("");
+                            req(seq);
+                        } else {
+                            alert("댓글 등록에 실패하였습니다. 다시 시도해주세요.");
+                        }
+                    }).catch((err) => {
+                        console.log(err);
+                    });
+                } else {
+                    alert("댓글 입력 후 등록해주세요.");
+                }
+            } else {
+                alert("로그인 후 이용해주세요.");
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
+
+
 
 
     return (
@@ -53,6 +104,8 @@ export default function BoardDetail() {
                     {detail.userId}님의 글
                 </De.DetailTitleInfo>
             </De.DetailTitle>
+
+
 
             {/* 게시글 정보 및 내용 */}
             <De.DetailBoardBox>
@@ -75,14 +128,18 @@ export default function BoardDetail() {
                 </De.DetailBoardContentBox>
             </De.DetailBoardBox>
 
+
+
             {/* 게시글 관련 댓글 */}
             <De.DetailCommentsBox>
                 <De.DetailCommentsTitle>댓글</De.DetailCommentsTitle>
 
-                <De.DetailComments>
-                    test12345 : 댓글입니당.
-                </De.DetailComments>
+                {cmts.map((v, i) => {
+                    return <De.DetailComments key={`cmt_${i}`}>{`${v.userId} : ${v.cmtContent}`}</De.DetailComments>
+                })}
             </De.DetailCommentsBox>
+
+
 
             {/* 댓글 등록 */}
             <De.DetailCommentsRegBox>
@@ -90,8 +147,9 @@ export default function BoardDetail() {
 
                 <De.CommentsInput maxLength="300" value={comments} onChange={(e) => setComments(e.target.value)}></De.CommentsInput>
 
-                <De.CommentsRegBtn>등록</De.CommentsRegBtn>
+                <De.CommentsRegBtn onClick={regCmt}>등록</De.CommentsRegBtn>
             </De.DetailCommentsRegBox>
+
 
 
             {/* 로딩 화면 */}

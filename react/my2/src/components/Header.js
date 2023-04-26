@@ -124,12 +124,9 @@ const Header = () => {
         removeCookie("token");
         removeCookie("image");
         removeCookie("id");
+        setLoginedOnoff(false);
         setLogin(false);
-
-        if (location.pathname === "/mypage" || location.pathname === "/regi") {
-            navi("/", { replace: true });
-        }
-
+        navi("/", { replace: true });
         ScrollTop();
         window.location.reload();
     }

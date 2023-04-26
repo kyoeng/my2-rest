@@ -82,4 +82,35 @@ public class BoardServiceImpl implements BoardService {
     public List<CommentsVO> getComments(FreeBoardVO vo) {
         return boardMapper.getComments(vo);
     }
+
+
+    /**
+     * 공지사항 등록
+     * @param vo PostBoardVO
+     * @return 성공 시 1, 실패 시 0
+     */
+    @Override
+    public int regiPost(PostBoardVO vo) {
+        return boardMapper.regiPost(vo);
+    }
+
+    /**
+     * 자유게시판 등록
+     * @param vo FreeBoardVO
+     * @return 성공 시 1, 실패 시 0
+     */
+    @Override
+    public int regiFree(FreeBoardVO vo) {
+        return boardMapper.regiFree(vo);
+    }
+
+    /**
+     * 댓글 등록
+     * @param vo CommentsVO
+     * @return 성공 시 1, 실패 시 0
+     */
+    @Override
+    public int regiCmt(CommentsVO vo) {
+        return boardMapper.regiCmt(vo);
+    }
 }

@@ -36,6 +36,14 @@ const Login = () => {
         });
     }
 
+
+    // 패스워드 엔터키 이벤트
+    function enterKey(e) {
+        if (e.keyCode === 13) {
+            login();
+        }
+    }
+
     return (
         <Lg.LoginContainer>
             <Lg.LoginTitle>Login</Lg.LoginTitle>
@@ -47,7 +55,7 @@ const Login = () => {
                 </Lg.LoginInputContainer>
 
                 <Lg.LoginInputContainer>
-                    <Lg.LoginInput type="password" value={inputPw} onChange={(e) => setInputPw(e.target.value)} />
+                    <Lg.LoginInput type="password" value={inputPw} onChange={(e) => setInputPw(e.target.value)} onKeyUp={(e) => enterKey(e)} />
                     <Lg.LoginValueInfo>Password</Lg.LoginValueInfo>
                 </Lg.LoginInputContainer>
 
