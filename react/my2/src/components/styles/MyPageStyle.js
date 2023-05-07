@@ -5,6 +5,7 @@ import styled from "styled-components";
 export const MyPageContainer = styled.div`
     width: 1024px;
     margin: 130px auto 0;
+    position: relative;
     @media screen and (max-width: 1024px) {
         width: 100%;
     }
@@ -78,6 +79,35 @@ export const MyImageChanger = styled.button`
         cursor: pointer;
         opacity: 0.5;
     }
+`
+
+// 이미지 미리보기 컨테이너
+export const ImagePreViewContainer = styled.div`
+    width: 150px;
+    height: 200px;
+    position: absolute;
+    top: 90px;
+    right: 200px;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 0 10px #87CEFA;
+`
+
+export const ImagePreviewTitle = styled.p`
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 1.6rem;
+    text-align: center;
+    color: #00BFFF;
+    font-weight: bold;
+`
+
+export const ImagePreview = styled.img`
+    width: 150px;
+    height: 150px;
+    display: block;
 `
 
 

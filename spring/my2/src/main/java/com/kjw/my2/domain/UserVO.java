@@ -2,6 +2,7 @@ package com.kjw.my2.domain;
 
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class UserVO {
@@ -15,5 +16,8 @@ public class UserVO {
     private String userState;
     private String userRole;
     private String userImage;
+
+    // 유저의 이미지 변경 시 이미지를 받기 위한 필드
+    private MultipartFile file;
 
 }

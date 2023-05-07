@@ -3,6 +3,7 @@ package com.kjw.my2.controller;
 
 import com.kjw.my2.domain.UserVO;
 import com.kjw.my2.service.EmailService;
+import com.kjw.my2.service.FileService;
 import com.kjw.my2.service.JwtService;
 import com.kjw.my2.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final FileService fileService;
 
 
     /**
@@ -140,6 +142,32 @@ public class UserController {
         if (vo != null) {
             vo.setPassword(null);
             return vo;
+        } else {
+            return null;
+        }
+    }
+
+
+    /**
+     * 유저 이미지 변경을 위한 메서드
+     * @param vo UserVO
+     * @param request HttpServletRequest
+     * @return 성공 시 바뀐 이미지 경로, 실패 시 null
+     */
+    @PutMapping("/auth/ch-img")
+    public String changeUserImage(@ModelAttribute UserVO vo, HttpServletRequest request) {
+        if (vo.getFile() == null) return null;
+
+        String changeImage = fileService.fileIO(vo.getFile(), request, "userImages", 0, vo.getUserId());
+
+        if (changeImage != null) {
+            vo.setUserImage("./images/userImages/" + changeImage);
+
+            if (fileService.userImageChange(vo) > 0) {
+                return vo.getUserImage();
+            } else {
+                return null;
+            }
         } else {
             return null;
         }
