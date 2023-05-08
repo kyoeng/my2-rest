@@ -16,4 +16,7 @@ public interface UserService {
     // GET-INFO
     UserVO getInfo(String id);
 
+    // Change PW
+    int changePw(UserVO vo);
+
 }

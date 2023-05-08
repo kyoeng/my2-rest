@@ -25,4 +25,11 @@
         select * from user
         where user_id = #{id}
     </select>
+
+    <!-- 비밀번호 변경 -->
+    <update id="changePw">
+        update user
+        set password = #{password}
+        where user_id = #{userId}
+    </update>
 </mapper>

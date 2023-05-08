@@ -173,4 +173,18 @@ public class UserController {
         }
     }
 
+
+    /**
+     * 비밀번호 변경
+     * @param vo UserVO
+     * @return boolean
+     */
+    @PutMapping("/auth/ch-pw")
+    public boolean changePw(@RequestBody UserVO vo) {
+        if (vo.getPassword() == null || "".equals(vo.getPassword()) || vo.getUserId() == null) return false;
+
+        vo.setPassword(passwordEncoder.encode(vo.getPassword()));
+        return userService.changePw(vo) > 0;
+    }
+
 }

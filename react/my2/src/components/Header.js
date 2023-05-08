@@ -173,7 +173,7 @@ const Header = () => {
                 <Head.SearchLoginBox>
                     <Head.SearchBtn onClick={onoffSearch} />
 
-                    <Head.LoginBtn>
+                    <Head.LoginBtn style={login ? { background: "none", backgroundColor: "white", borderRadius: "50%" } : {}}>
                         <Head.NonePosiLink to="/login" onClick={ScrollTop}
                             style={login ? { display: "none" } : { display: "block" }} />
 

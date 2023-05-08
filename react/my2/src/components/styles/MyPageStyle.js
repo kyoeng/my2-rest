@@ -115,7 +115,7 @@ export const ImagePreview = styled.img`
 
 // 마이페이지 네비 박스
 export const MyPageNav = styled.div`
-    width: 850px;
+    width: 650px;
     height: 130px;
     margin: 30px auto;
     display: flex;
@@ -134,7 +134,7 @@ export const MyPageNav = styled.div`
 
 // 마이페이지 네비 버튼
 export const MyPageNavBtn = styled.button`
-    width: 30%;
+    width: 45%;
     height: 100%;
     border-radius: 40px;
     background-color: #87CEFA;
@@ -209,6 +209,26 @@ export const MyInfoValue = styled.span`
     padding: 0 10px;
 `
 
+export const PwInfoText = styled.p`
+    width: 100%;
+    height: 25px;
+    line-height: 25px;
+    padding-left: 10px;
+    font-size: 1.3rem;
+    position: absolute;
+    left: 0;
+    bottom: -25px;
+    color: red;
+`
+
+export const PwCheckImg = styled.div`
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+`
+
 export const MyInfoChangeBtn = styled.button`
     width: 100%;
     height: 50px;
@@ -225,5 +245,3 @@ export const MyInfoChangeBtn = styled.button`
 `
 
 
-
-// 임시 ================

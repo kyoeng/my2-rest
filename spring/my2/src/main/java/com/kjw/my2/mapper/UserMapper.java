@@ -19,4 +19,7 @@ public interface UserMapper {
     // GET-INFO
     UserVO getInfo(String id);
 
+    // Change PW
+    int changePw(UserVO vo);
+
 }

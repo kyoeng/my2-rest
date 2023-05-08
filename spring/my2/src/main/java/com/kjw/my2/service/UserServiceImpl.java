@@ -51,4 +51,14 @@ public class UserServiceImpl implements UserService {
     public UserVO getInfo(String id) {
         return userMapper.getInfo(id);
     }
+
+    /**
+     * 패스워드 변경
+     * @param vo UserVO
+     * @return 성공 1, 실패 0
+     */
+    @Override
+    public int changePw(UserVO vo) {
+        return userMapper.changePw(vo);
+    }
 }
