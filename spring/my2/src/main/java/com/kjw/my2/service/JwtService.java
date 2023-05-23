@@ -71,7 +71,7 @@ public class JwtService {
      * @return 유효 시 true, 유효하지 않을 시 false
      */
     public boolean validToken(String token) {
-        if (token == null) return false;
+        if (token == null || token.equals("undefined")) return false;
 
         try {
             Jwts.parserBuilder()

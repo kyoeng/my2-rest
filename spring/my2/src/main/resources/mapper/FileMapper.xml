@@ -8,4 +8,10 @@
         set user_image = #{userImage}
         where user_id = #{userId}
     </update>
+
+    <!-- 스토리 이미지 등록 -->
+    <insert id="regStoryImg">
+        insert into story_imgs(story_seq, user_id, img_path)
+        values(#{storySeq}, #{userId}, #{imgPath})
+    </insert>
 </mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kjw.my2.mapper.StoryMapper">
+    <!-- 스토리 등록 -->
+    <insert id="regStory">
+        insert into storys(user_id, story_title, story_area, story_content)
+        values(#{userId}, #{storyTitle}, #{storyArea}, #{storyContent})
+    </insert>
+
+    <select id="selectSeq" resultType="int">
+        select story_seq from storys
+        where user_id = #{userId}
+    </select>
+</mapper>

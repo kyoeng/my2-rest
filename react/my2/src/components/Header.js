@@ -73,6 +73,12 @@ const Header = () => {
         setMenuOnoff(!menuOnoff);
     }
 
+    // 메뉴 선택 시 이벤트 ====
+    function selectMenu() {
+        onoffMenu();
+        ScrollTop();
+    }
+
 
 
     // 로그인 후 계정관련 버튼 이벤트 ====
@@ -188,22 +194,22 @@ const Header = () => {
             {/* 메뉴창 */}
             <Head.MenuContainer ref={Menu} style={menuOnoff ? { display: "flex" } : { display: "none" }}>
                 <Head.MenuBox>
-                    <Head.Cate to="/finder" onClick={onoffMenu}>
+                    <Head.Cate to="/finder" onClick={selectMenu}>
                         <Head.CateImageTr />
                         여행지 찾기
                     </Head.Cate>
 
-                    <Head.Cate to="/story" onClick={onoffMenu}>
+                    <Head.Cate to="/story" onClick={selectMenu}>
                         <Head.CateImageList />
                         스토리 보기
                     </Head.Cate>
 
-                    <Head.Cate to="/regi-story" onClick={onoffMenu}>
+                    <Head.Cate to={login ? "/regi-story" : "/login"} onClick={selectMenu}>
                         <Head.CateImageAdd />
                         스토리 작성
                     </Head.Cate>
 
-                    <Head.Cate to="/board" onClick={onoffMenu}>
+                    <Head.Cate to="/board" onClick={selectMenu}>
                         <Head.CateImageBoard />
                         게시판으로
                     </Head.Cate>

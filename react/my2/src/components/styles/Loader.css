@@ -20,6 +20,13 @@
     z-index: 100;
 }
 
+.storyLoader {
+    width: 100%;
+    height: 100px;
+    position: relative;
+    display: none;
+}
+
 .loaderContainerFix {
     width: 100%;
     height: 100%;

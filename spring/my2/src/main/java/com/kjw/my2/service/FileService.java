@@ -1,6 +1,7 @@
 package com.kjw.my2.service;
 
 
+import com.kjw.my2.domain.StoryImgsVO;
 import com.kjw.my2.domain.UserVO;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,5 +14,8 @@ public interface FileService {
 
     // 파일 저장
     String fileIO(MultipartFile file, HttpServletRequest request, String inputDir, int num, String userId);
+
+    // 스토리 이미지 등록
+    int regStoryImg(StoryImgsVO vo);
 
 }

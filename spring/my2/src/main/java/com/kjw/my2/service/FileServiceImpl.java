@@ -1,6 +1,7 @@
 package com.kjw.my2.service;
 
 
+import com.kjw.my2.domain.StoryImgsVO;
 import com.kjw.my2.domain.UserVO;
 import com.kjw.my2.mapper.FileMapper;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,16 @@ public class FileServiceImpl implements FileService {
         return fileMapper.userImageChange(vo);
     }
 
+
+    /**
+     * 스토리 이미지 등록
+     * @param vo StoryImgsVO
+     * @return 성공 시 1, 실패 시 0
+     */
+    @Override
+    public int regStoryImg(StoryImgsVO vo) {
+        return fileMapper.regStoryImg(vo);
+    }
 
     /**
      * 파일 저장

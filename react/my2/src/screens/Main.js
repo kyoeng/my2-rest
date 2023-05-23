@@ -4,8 +4,20 @@ import Banners from "../components/Banners";
 import PartyComp from "../components/PartyComp";
 import RecomComp from "../components/RecomComp";
 import ScrollTop from '../components/commons/ScrollTop';
+import { useState } from 'react';
+import { useLayoutEffect } from 'react';
+import { getCookie } from '../components/commons/Cookie';
 
 const Index = () => {
+    const [login, setLogin] = useState(false);      // 로그인 확인용
+
+    useLayoutEffect(() => {
+        if (getCookie("token") !== undefined && getCookie("id") !== undefined) {
+            setLogin(true);
+        } else {
+            setLogin(false);
+        }
+    }, []);
 
     return (
         <Idx.IndexMainContainer>
@@ -32,7 +44,7 @@ const Index = () => {
                 <Idx.IdxMainCateBox>
                     <Idx.IdxMainCateImg src='./images/icons/add_blue.png' />
                     <Idx.IdxMainCateText>스토리 작성</Idx.IdxMainCateText>
-                    <PositionLink to="/regi-story" onClick={ScrollTop}
+                    <PositionLink to={login ? "/regi-story" : "/login"} onClick={ScrollTop}
                         style={{ borderRadius: "100px", overflow: "hidden" }} />
                 </Idx.IdxMainCateBox>
 

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { getCookie, setCookie } from "../components/commons/Cookie";
 import * as My from "../components/styles/MyPageStyle";
-import { toSpringBoot, toSpringWithToken } from "../components/commons/Axioses";
+import { toSpringWithToken } from "../components/commons/Axioses";
 import ScrollTop from './../components/commons/ScrollTop';
 
 
@@ -42,13 +42,9 @@ export default function MyPage() {
     // Spring 서버로 요청 ==============
     useEffect(() => {
         if (navStatus === 2) {
-            console.log("hi");
-            toSpringBoot({
-                url: "/auth/get-info",
+            toSpringWithToken({
+                url: "/get-info",
                 method: "get",
-                headers: {
-                    Authorization: `Bearer ${getCookie("token")}`
-                },
                 params: {
                     "userId": getCookie("id")
                 }

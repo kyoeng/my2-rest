@@ -11,6 +11,7 @@ import MyPage from './screens/MyPage';
 import Finder from './screens/Finder';
 import Board from './screens/Board';
 import BoardDetail from './screens/BoardDetail';
+import RegStory from './screens/RegStory';
 
 function App() {
   // common css
@@ -59,13 +60,29 @@ function App() {
       <Header />
 
       <Routes>
+        {/* Main */}
         <Route path='/' element={<Main />} />
+
+        {/* Login */}
         <Route path='/login' element={<Login />} />
+
+        {/* Join */}
         <Route path='/join' element={<Join />} />
+
+        {/* MyPage */}
         <Route path='/mypage' element={<MyPage />} />
+
+        {/* 여행지 찾기 */}
         <Route path='/finder' element={<Finder />} />
+
+        {/* 게시판 */}
         <Route path='/board' element={<Board />} />
+
+        {/* 게시판 디테일 */}
         <Route path='/board-detail/:seq' element={<BoardDetail />} />
+
+        {/* 스토리 등록 */}
+        <Route path='/regi-story' element={<RegStory />} />
       </Routes>
 
       <Footer />
