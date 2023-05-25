@@ -1,17 +1,42 @@
 package com.kjw.my2.service;
 
 
+import com.kjw.my2.domain.StoryDTO;
 import com.kjw.my2.domain.StoryImgsVO;
 import com.kjw.my2.domain.StorysVO;
+import com.kjw.my2.domain.forPaging.SearchCri;
 import com.kjw.my2.mapper.StoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class StoryServiceImpl implements StoryService {
 
     private final StoryMapper storyMapper;
+
+
+    /**
+     * 스토리 가져오기
+     * @param cri SearchCri
+     * @return List<StoryDTO>
+     */
+    @Override
+    public List<StoryDTO> getStorys(SearchCri cri) {
+        return storyMapper.getStorys(cri);
+    }
+
+    /**
+     * 스토리 데이터 전체 갯수
+     * @param cri SearchCri
+     * @return int
+     */
+    @Override
+    public int totalStory(SearchCri cri) {
+        return storyMapper.totalStory(cri);
+    }
 
     /**
      * 스토리 테이블에 등록

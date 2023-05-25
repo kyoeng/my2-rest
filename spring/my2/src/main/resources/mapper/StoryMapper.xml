@@ -2,14 +2,77 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kjw.my2.mapper.StoryMapper">
+    <sql id="type">
+        /* 검색 순서 지정 */
+        <choose>
+            <when test="type == 'l'.toString()">
+               story_view
+            </when>
+
+            <when test="type == 'v'.toString()">
+                story_like
+            </when>
+
+            <otherwise>
+                story_seq
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="condition">
+        /* 검색 조건 지정 */
+        <if test="keyword != null">
+            <bind name="kwd" value="'%'+keyword+'%'"/>
+        </if>
+
+        <choose>
+            <when test="type == 'i'.toString()">
+                where user_id like #{kwd}
+            </when>
+
+            <when test="type == 'a'.toString()">
+                where story_area like #{kwd}
+            </when>
+
+            <otherwise>
+                /* 검색이 아닐 시 공백 처리 */
+            </otherwise>
+        </choose>
+    </sql>
+
+    <!-- 스토리 검색 (DTO로 가져오기) -->
+    <select id="getStorys" resultType="StoryDto">
+        select storys.story_seq, storys.user_id, storys.story_title,
+               storys.story_area, storys.story_view, storys.story_like, story_imgs.img_path
+        from storys
+                 join story_imgs
+        on storys.story_seq = story_imgs.story_seq and
+           story_imgs.img_path like '%-1%'
+        <include refid="condition" />
+        order by <include refid="type" /> desc
+        limit #{startNum}, #{rowsPerPage}
+    </select>
+
+    <!-- 스토리 데이터 전체 갯수 -->
+    <select id="totalStory" resultType="int">
+        select count(*)
+        from storys
+        <include refid="condition" />
+    </select>
+
+
+
     <!-- 스토리 등록 -->
     <insert id="regStory">
         insert into storys(user_id, story_title, story_area, story_content)
         values(#{userId}, #{storyTitle}, #{storyArea}, #{storyContent})
     </insert>
 
+    <!-- 등록된 스토리 seq 가져오기 -->
     <select id="selectSeq" resultType="int">
         select story_seq from storys
         where user_id = #{userId}
+        order by reg_date desc
+        limit 0, 1
     </select>
 </mapper>

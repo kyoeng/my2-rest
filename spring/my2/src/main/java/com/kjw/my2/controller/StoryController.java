@@ -1,19 +1,23 @@
 package com.kjw.my2.controller;
 
 
+import com.kjw.my2.domain.StoryDTO;
 import com.kjw.my2.domain.StoryImgsVO;
 import com.kjw.my2.domain.StorysVO;
+import com.kjw.my2.domain.forPaging.PageMaker;
+import com.kjw.my2.domain.forPaging.SearchCri;
 import com.kjw.my2.service.FileService;
 import com.kjw.my2.service.StoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Slf4j
@@ -26,7 +30,38 @@ public class StoryController {
     private final FileService fileService;
 
 
-    // 메서드 ( 이 컨트롤러는 모두 로그인 권한이 필요 )
+    // 메서드 (로그인 필요 X) =====
+    @GetMapping("/get-storys")
+    public Map<String, Object> getStorys(SearchCri cri, PageMaker pageMaker, @RequestParam(value = "currentPage", required = false) String currentPage,
+                                         @RequestParam(value = "type", required = false) String type, @RequestParam(value = "keyword", required = false) String keyword) {
+        // return할 Map 선언
+        Map<String, Object> result = new HashMap<>();
+
+        if (currentPage != null) cri.setCurrentPage(Integer.parseInt(currentPage));     // currentPage가 null이 아니면 동작
+        if (type != null) cri.setType(type);                                            // type이 null이 아니면 동작
+        if (keyword != null) cri.setKeyword(keyword);                                   // keyword가 null이 아니면 동작
+
+        cri.setRowsPerPage(9);  // 9개의 데이터를 내보내기 위한 setter
+        cri.setStartNum();      // currentPage에 맞게 limit 시작점 setting
+        result.put("result", storyService.getStorys(cri));      // 데이터 검색
+
+        pageMaker.setCriteria(cri);
+        pageMaker.setTotalDataCount(storyService.totalStory(cri));
+        result.put("pageMaker", pageMaker);
+
+        return result;
+    }
+
+
+    // 메서드 (로그인 필요) =====
+
+    /**
+     * 스토리 등록을 위한 컨트롤러
+     * @param vo StorysVO
+     * @param imgsVO StoryImgsVO
+     * @param request HttpServletRequest
+     * @return 등록 성공 시 true, 실패 시 false
+     */
     @Transactional
     @PostMapping("/auth/reg-story")
     public boolean regStory(@ModelAttribute StorysVO vo, StoryImgsVO imgsVO, HttpServletRequest request) {

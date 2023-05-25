@@ -12,6 +12,7 @@ import Finder from './screens/Finder';
 import Board from './screens/Board';
 import BoardDetail from './screens/BoardDetail';
 import RegStory from './screens/RegStory';
+import Story from './screens/Story';
 
 function App() {
   // common css
@@ -83,6 +84,9 @@ function App() {
 
         {/* 스토리 등록 */}
         <Route path='/regi-story' element={<RegStory />} />
+
+        {/* 스토리 */}
+        <Route path='/story' element={<Story />} />
       </Routes>
 
       <Footer />

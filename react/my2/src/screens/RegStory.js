@@ -48,7 +48,17 @@ export default function RegStory() {
             const reader = new FileReader();
             reader.readAsDataURL(files[i]);
             reader.onloadend = () => {
-                pv.push(<Rs.Previews key={`pv_${i}`} src={reader.result} alt="" />);
+                console.log(files[i].type);
+                console.log(reader);
+                if (files[i].type.split("/")[0] === "video") {
+                    pv.push(
+                        <Rs.PreviewsVideo key={`pv_${i}`} autoPlay controls muted loop>
+                            <source src={reader.result}/>
+                        </Rs.PreviewsVideo>
+                    );
+                } else {
+                    pv.push(<Rs.Previews key={`pv_${i}`} src={reader.result} alt="" />);
+                }
             }
         }
 
@@ -88,7 +98,7 @@ export default function RegStory() {
             }).then((res) => {
                 if (res.status === 200 && res.data) {
                     alert("등록이 완료되었습니다.");
-                    window.location.reload();
+                    navi("/story", { replace: true });
                 } else {
                     alert("등록에 실패하였습니다. 다시 시도해주세요.");
                     console.log(res);

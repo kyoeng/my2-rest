@@ -49,6 +49,11 @@ export const Previews = styled.img`
     height: 150px;
 `
 
+export const PreviewsVideo = styled.video`
+    width: 180px;
+    height: 150px;
+`
+
 
 
 

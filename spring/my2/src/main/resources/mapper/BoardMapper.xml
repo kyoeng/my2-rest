@@ -32,7 +32,7 @@
             </when>
 
             <otherwise>
-
+                /* 검색이 아닐 시 공백 처리 */
             </otherwise>
         </choose>
     </sql>
