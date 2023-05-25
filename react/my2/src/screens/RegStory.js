@@ -128,7 +128,7 @@ export default function RegStory() {
 
                     <Rs.RegStoryLabel>
                         사진 등록
-                        <Rs.RegStoryFile type="file" multiple ref={inputFiles} onChange={previewEvt} />
+                        <Rs.RegStoryFile type="file" multiple ref={inputFiles} accept="video/*, image/*" onChange={previewEvt} />
                     </Rs.RegStoryLabel>
                 </Rs.RegStoryUploadBox>
 
