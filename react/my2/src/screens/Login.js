@@ -22,7 +22,7 @@ const Login = () => {
                 "password": inputPw
             }
         }).then((res) => {
-            if (res.status === 200 && res.data !== null) {
+            if (res.status === 200 && res.data.token !== null && res.data.token !== undefined) {
                 setCookie("token", res.data.token);
                 setCookie("image", res.data.image);
                 setCookie("id", inputId);

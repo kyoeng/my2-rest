@@ -15,8 +15,14 @@ public interface StoryMapper {
     // 스토리 가져오기
     List<StoryDTO> getStorys(SearchCri cri);
 
+    // 해당 아이디의 스토리 가져오기
+    List<StoryDTO> getMyStorys(SearchCri cri);
+
     // 스토리 전체 데이터 갯수
     int totalStory(SearchCri cri);
+
+    // 해당 아이디의 스토리 전체 데이터 갯수
+    int totalMyStory(SearchCri cri);
 
     // 스토리 등록
     int regStory(StorysVO vo);

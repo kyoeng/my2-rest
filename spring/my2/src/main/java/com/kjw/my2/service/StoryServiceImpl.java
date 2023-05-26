@@ -28,6 +28,18 @@ public class StoryServiceImpl implements StoryService {
         return storyMapper.getStorys(cri);
     }
 
+
+    /**
+     * 해당 아이디의 스토리 가져오기 ( 마이페이지 )
+     * @param cri SearchCri
+     * @return List<StoryDTO>
+     */
+    @Override
+    public List<StoryDTO> getMyStorys(SearchCri cri) {
+        return storyMapper.getMyStorys(cri);
+    }
+
+
     /**
      * 스토리 데이터 전체 갯수
      * @param cri SearchCri
@@ -37,6 +49,18 @@ public class StoryServiceImpl implements StoryService {
     public int totalStory(SearchCri cri) {
         return storyMapper.totalStory(cri);
     }
+
+
+    /**
+     * 해당 아이디의 스토리 데이터 전체 갯수
+     * @param cri SearchCri
+     * @return int
+     */
+    @Override
+    public int totalMyStory(SearchCri cri) {
+        return storyMapper.totalMyStory(cri);
+    }
+
 
     /**
      * 스토리 테이블에 등록

@@ -41,7 +41,7 @@
     </sql>
 
     <!-- 스토리 검색 (DTO로 가져오기) -->
-    <select id="getStorys" resultType="StoryDto">
+    <select id="getStorys" resultType="StoryDTO">
         select storys.story_seq, storys.user_id, storys.story_title,
                storys.story_area, storys.story_view, storys.story_like, story_imgs.img_path
         from storys
@@ -49,7 +49,20 @@
         on storys.story_seq = story_imgs.story_seq and
            story_imgs.img_path like '%-1%'
         <include refid="condition" />
-        order by <include refid="type" /> desc
+                 order by <include refid="type" /> desc
+        limit #{startNum}, #{rowsPerPage}
+    </select>
+
+    <!-- 마이페이지용 스토리 가져오기 -->
+    <select id="getMyStorys" resultType="StoryDTO">
+        select storys.story_seq, storys.user_id, storys.story_title,
+               storys.story_area, storys.story_view, storys.story_like, story_imgs.img_path
+        from storys
+                 join story_imgs
+        on storys.story_seq = story_imgs.story_seq and
+           story_imgs.img_path like '%-1%'
+        where storys.user_id = #{keyword}
+                 order by storys.reg_date desc
         limit #{startNum}, #{rowsPerPage}
     </select>
 
@@ -59,8 +72,13 @@
         from storys
         <include refid="condition" />
     </select>
-
-
+    
+    <!-- 마이페이지용 데이터 전체 갯수 -->
+    <select id="totalMyStory" resultType="int">
+        select count(*)
+        from storys
+        where user_id = #{keyword}
+    </select>
 
     <!-- 스토리 등록 -->
     <insert id="regStory">

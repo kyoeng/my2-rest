@@ -2,7 +2,7 @@ import { useState } from "react";
 import * as Rs from "../components/styles/RegStoryStyle";
 import { useRef } from "react";
 import { toSpringWithToken } from "../components/commons/Axioses";
-import { getCookie } from "../components/commons/Cookie";
+import { getCookie, removeCookie } from "../components/commons/Cookie";
 import { useNavigate } from "react-router-dom";
 import ScrollTop from "../components/commons/ScrollTop";
 
@@ -53,7 +53,7 @@ export default function RegStory() {
                 if (files[i].type.split("/")[0] === "video") {
                     pv.push(
                         <Rs.PreviewsVideo key={`pv_${i}`} autoPlay controls muted loop>
-                            <source src={reader.result}/>
+                            <source src={reader.result} />
                         </Rs.PreviewsVideo>
                     );
                 } else {
@@ -107,6 +107,9 @@ export default function RegStory() {
                 if (err.code === "ERR_NETWORK") {
                     alert("로그인 후 이용해주세요.");
                     ScrollTop();
+                    removeCookie("token");
+                    removeCookie("id");
+                    removeCookie("image");
                     navi("/login", { replace: true });
                 } else {
                     console.log(err);

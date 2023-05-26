@@ -40,7 +40,7 @@ public class Criteria {
      * @param rowsPerPage 넘겨줄 데이터의 갯수
      */
     public void setRowsPerPage(int rowsPerPage) {
-        if (rowsPerPage > 5 && rowsPerPage < 50) {
+        if (rowsPerPage > 0 && rowsPerPage < 50) {
             this.rowsPerPage = rowsPerPage;
         } else {
             this.rowsPerPage = 10;

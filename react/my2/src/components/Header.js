@@ -28,6 +28,8 @@ const Header = () => {
         if (getCookie("token") !== undefined && getCookie("image") !== undefined) {
             userImage.current = getCookie("image");
             setLogin(true);
+        } else {
+            setLogin(false);
         }
     }, [location.pathname]);
 

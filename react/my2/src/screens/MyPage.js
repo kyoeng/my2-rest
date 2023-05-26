@@ -3,14 +3,16 @@ import { getCookie, setCookie } from "../components/commons/Cookie";
 import * as My from "../components/styles/MyPageStyle";
 import { toSpringWithToken } from "../components/commons/Axioses";
 import ScrollTop from './../components/commons/ScrollTop';
+import * as St from "../components/styles/StoryStyle";
 
 
 
 export default function MyPage() {
+    const [navStatus, setNavStatus] = useState(1);      // 마이페이지 메뉴를 위한 변수
+
+    const [storys, setStorys] = useState([]);               // 나의 스토리의 view를 저장할 변수
     const [inputPw, setInputPw] = useState("");             // 비밀번호
     const [inputCheckP, setInputCheckP] = useState("");     // 비밀번호 확인
-
-    const [navStatus, setNavStatus] = useState(1);      // 마이페이지 메뉴를 위한 변수
 
     // 내정보를 위한 객체
     const [myinfo, setMyinfo] = useState({
@@ -19,6 +21,10 @@ export default function MyPage() {
         "phone": "",
         "email": ""
     });
+
+    const loading = useRef([]);         // 나의 스토리 로딩 화면들
+    const page = useRef(1);             // 나의 스토리 페이지 번호
+    const moreView = useRef();          // 더 보기 버튼 참조
 
     const fileInput = useRef();         // 파일 input 태그
     const previewContainer = useRef();  // 미리보기 컨테이너
@@ -39,9 +45,73 @@ export default function MyPage() {
     }
 
 
+    // story view를 만드는 함수
+    function viewFactory(res) {
+        let views = [];
+
+        for (let i = 0; i < res.data.result.length; i++) {
+            let area = res.data.result[i].storyArea.replace(/ /gi, '#');                // 지역앞에 #붙이기
+            let extension = res.data.result[i].imgPath.split("/")[3].split(".")[1];     // 확장자 구하기
+
+            views.push(
+                <St.StoryBox key={`st_${i}`}
+                    style={extension === "jpg" || extension === "png" ?
+                        { background: `url(${res.data.result[i].imgPath}) center/100% no-repeat` } : { display: "flex", alignItems: "center" }}>
+
+                    {extension === "jpg" || extension === "png" ?
+                        '' : <St.StoryVideo autoPlay muted loop><source src={res.data.result[i].imgPath} /></St.StoryVideo>}
+
+                    <St.StoryValue>
+                        <St.StoryTextBox>
+                            <St.StoryText>ID : {res.data.result[i].userId}</St.StoryText>
+                            <St.StoryText>#{area}</St.StoryText>
+                        </St.StoryTextBox>
+
+                        <St.StoryLikeView>
+                            Like : {res.data.result[i].storyLike}
+                        </St.StoryLikeView>
+                        <St.StoryLikeView style={{ top: "40px" }}>
+                            view : {res.data.result[i].storyView}
+                        </St.StoryLikeView>
+                    </St.StoryValue>
+
+                    <St.StoryLink to={``} />
+                </St.StoryBox>
+            );
+        }
+
+        return views;
+    }
+
+
     // Spring 서버로 요청 ==============
     useEffect(() => {
-        if (navStatus === 2) {
+        // 나의 스토리에 대한 요청 ===
+        if (navStatus === 1) {
+            toSpringWithToken({
+                url: "/get-mystorys",
+                method: "get",
+                params: {
+                    "userId": getCookie("id")
+                }
+            }).then((res) => {
+                if (res.status === 200 && res.data !== null) {
+                    const views = viewFactory(res);
+
+                    loading.current[0].style.display = "none";
+                    setStorys(views);
+
+                    if (page.current < res.data.pageMaker.endPageNum) {
+                        moreView.current.style.display = "block";
+                    }
+                } else {
+                    console.log(res);
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
+            // 내 정보에 대한 요청 ===
+        } else if (navStatus === 2) {
             toSpringWithToken({
                 url: "/get-info",
                 method: "get",
@@ -57,7 +127,7 @@ export default function MyPage() {
                         "email": res.data.userEmail
                     });
                 } else {
-                    setNavStatus(1);
+                    console.log(res);
                 }
             }).catch((err) => {
                 console.log(err);
@@ -210,15 +280,16 @@ export default function MyPage() {
 
 
             {/* 나의 스토리 */}
-            <My.MyStoryContainer style={navStatus === 1 ? { display: "flex" } : { display: "none" }}>
-                <My.MyStoryBox></My.MyStoryBox>
-                <My.MyStoryBox></My.MyStoryBox>
-                <My.MyStoryBox></My.MyStoryBox>
-                <My.MyStoryBox></My.MyStoryBox>
-                <My.MyStoryBox></My.MyStoryBox>
-                <My.MyStoryBox></My.MyStoryBox>
-                <My.MyStoryBox></My.MyStoryBox>
-            </My.MyStoryContainer>
+            <St.StoryContentContainer style={navStatus === 1 ? { display: "flex" } : { display: "none" }}>
+                <div className="storyLoader" style={{ display: "block", height: "500px" }} ref={(e) => loading.current[0] = e}>
+                    <div className="loader"></div>
+                </div>
+
+                {storys}
+            </St.StoryContentContainer>
+            <St.StoryMoreBtn ref={moreView} style={navStatus === 1 ? { display: "none" } : { display: "none" }}>
+                더 보기
+            </St.StoryMoreBtn>
 
 
 

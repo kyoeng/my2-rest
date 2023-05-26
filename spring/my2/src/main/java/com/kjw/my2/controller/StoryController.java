@@ -31,6 +31,16 @@ public class StoryController {
 
 
     // 메서드 (로그인 필요 X) =====
+
+    /**
+     * 스토리 보기를 위한 컨트롤러
+     * @param cri SearchCri
+     * @param pageMaker PageMaker
+     * @param currentPage String ( PageNumber )
+     * @param type String ( 검색 타입 )
+     * @param keyword String ( 검색 키워드 )
+     * @return 스토리 데이터들과 페이징을 위한 객체
+     */
     @GetMapping("/get-storys")
     public Map<String, Object> getStorys(SearchCri cri, PageMaker pageMaker, @RequestParam(value = "currentPage", required = false) String currentPage,
                                          @RequestParam(value = "type", required = false) String type, @RequestParam(value = "keyword", required = false) String keyword) {
@@ -41,7 +51,7 @@ public class StoryController {
         if (type != null) cri.setType(type);                                            // type이 null이 아니면 동작
         if (keyword != null) cri.setKeyword(keyword);                                   // keyword가 null이 아니면 동작
 
-        cri.setRowsPerPage(9);  // 9개의 데이터를 내보내기 위한 setter
+        cri.setRowsPerPage(3);  // 9개의 데이터를 내보내기 위한 setter
         cri.setStartNum();      // currentPage에 맞게 limit 시작점 setting
         result.put("result", storyService.getStorys(cri));      // 데이터 검색
 
@@ -102,6 +112,36 @@ public class StoryController {
             // 스토리 테이블에 등록 실패 시
             return false;
         }
+    }
+
+
+    /**
+     * 마이페이지에서 내 스토리 보기를 위한 컨트롤러
+     * @param userId String ( ID )
+     * @param pageMaker PageMaker
+     * @param currentPage String ( PageNumber )
+     * @param cri SearchCri
+     * @return 스토리 데이터들과 페이징을 위한 객체
+     */
+    @GetMapping("/auth/get-mystorys")
+    public Map<String, Object> getMyStorys(@RequestParam String userId, PageMaker pageMaker,
+                                           @RequestParam(value = "currentPage", required = false) String currentPage,
+                                           SearchCri cri) {
+        Map<String, Object> result = new HashMap<>();   // return할 Map 선언
+
+        if (currentPage != null) cri.setCurrentPage(Integer.parseInt(currentPage));     // 현재 페이지가 넘어올 경우 setting
+
+        cri.setKeyword(userId);     // userId setting
+        cri.setStartNum();          // limit의 시작점 setting
+        cri.setRowsPerPage(9);      // 내보낼 데이터 갯수 setting
+        // 해당 아이디의 스토리 데이터 담기
+        result.put("result", storyService.getMyStorys(cri));
+
+        pageMaker.setCriteria(cri);
+        pageMaker.setTotalDataCount(storyService.totalStory(cri));
+        result.put("pageMaker", pageMaker);
+
+        return result;
     }
 
 }
