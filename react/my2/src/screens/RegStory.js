@@ -98,7 +98,7 @@ export default function RegStory() {
             }).then((res) => {
                 if (res.status === 200 && res.data) {
                     alert("등록이 완료되었습니다.");
-                    navi("/story", { replace: true });
+                    navi("/mypage", { replace: true });
                 } else {
                     alert("등록에 실패하였습니다. 다시 시도해주세요.");
                     console.log(res);

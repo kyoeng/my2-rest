@@ -1,6 +1,7 @@
 package com.kjw.my2.service;
 
 
+import com.kjw.my2.domain.StoryCommentsVO;
 import com.kjw.my2.domain.StoryDTO;
 import com.kjw.my2.domain.StoryImgsVO;
 import com.kjw.my2.domain.StorysVO;
@@ -63,6 +64,43 @@ public class StoryServiceImpl implements StoryService {
 
 
     /**
+     * 스토리 디테일을 위한 스토리 정보 가져오기
+     * @param vo StorysVO
+     * @return StorysVO
+     */
+    @Override
+    public StorysVO getStoryOne(StorysVO vo) {
+        return storyMapper.getStoryOne(vo);
+    }
+
+
+    /**
+     * 스토리 디테일을 위한 이미지 정보 가져오기
+     * @param vo StorysVO
+     * @return List<String>
+     */
+    @Override
+    public List<String> getStoryImgs(StorysVO vo) {
+        return storyMapper.getStoryImgs(vo);
+    }
+
+
+    /**
+     * 스토리 댓글 가져오기
+     * @param vo StorysVO
+     * @return List<StoryCommentsVO>
+     */
+    @Override
+    public List<StoryCommentsVO> getStoryCmt(StorysVO vo) {
+        return storyMapper.getStoryCmt(vo);
+    }
+
+
+
+
+
+
+    /**
      * 스토리 테이블에 등록
      * @param vo StorysVO
      * @return 성공 시 1, 실패 시 0
@@ -81,5 +119,16 @@ public class StoryServiceImpl implements StoryService {
     @Override
     public int selectSeq(StorysVO vo) {
         return storyMapper.selectSeq(vo);
+    }
+
+
+    /**
+     * 스토리 댓글 등록
+     * @param vo StoryCommentsVO
+     * @return 성공 시 1, 실패 시 0
+     */
+    @Override
+    public int regStcmt(StoryCommentsVO vo) {
+        return storyMapper.regStcmt(vo);
     }
 }

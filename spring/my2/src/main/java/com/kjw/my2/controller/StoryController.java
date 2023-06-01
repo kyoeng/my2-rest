@@ -1,6 +1,7 @@
 package com.kjw.my2.controller;
 
 
+import com.kjw.my2.domain.StoryCommentsVO;
 import com.kjw.my2.domain.StoryDTO;
 import com.kjw.my2.domain.StoryImgsVO;
 import com.kjw.my2.domain.StorysVO;
@@ -60,6 +61,32 @@ public class StoryController {
         result.put("pageMaker", pageMaker);
 
         return result;
+    }
+
+
+    /**
+     * 스토리 디테일을 위한 컨트롤러
+     * @param seq seq
+     * @param vo StorysVO
+     * @return 스토리 디테일을 위한 데이터
+     */
+    @GetMapping("/get-sdetail")
+    public Map<String, Object> getStDetail(@RequestParam(value = "seq") int seq, StorysVO vo) {
+        // return할 Map 선언
+        Map<String, Object> result = new HashMap<>();
+        
+        vo.setStorySeq(seq);    // 해당하는 seq로 setting
+
+        result.put("st", storyService.getStoryOne(vo));         // 스토리 테이블 데이터 담기
+        result.put("imgs", storyService.getStoryImgs(vo));      // 이미지 경로 담기
+        result.put("cmts", storyService.getStoryCmt(vo));       // 댓글 정보 담기
+
+        if (result.get("st") != null && result.get("imgs") != null) {
+            return  result;
+        } else {
+            return null;
+        }
+        
     }
 
 
@@ -142,6 +169,17 @@ public class StoryController {
         result.put("pageMaker", pageMaker);
 
         return result;
+    }
+
+
+    /**
+     * 스토리의 댓글 등록을 위한 컨트롤러
+     * @param vo StoryCommentsVO
+     * @return boolean
+     */
+    @PostMapping("/auth/reg-stcmt")
+    public boolean regStcmt(@RequestBody StoryCommentsVO vo) {
+        return storyService.regStcmt(vo) > 0;
     }
 
 }

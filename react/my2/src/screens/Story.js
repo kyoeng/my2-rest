@@ -21,6 +21,9 @@ const Story = () => {
     const page = useRef(1);     // 페이지 번호
 
 
+    
+
+
     // 스토리에 대한 뷰를 만들어주는 함수
     function viewFactory(res) {
         let views = [];
@@ -51,7 +54,7 @@ const Story = () => {
                         </St.StoryLikeView>
                     </St.StoryValue>
 
-                    <St.StoryLink to={``} />
+                    <St.StoryLink to={`/story-detail/${res.data.result[i].storySeq}`} onClick={ScrollTop} />
                 </St.StoryBox>
             );
         }

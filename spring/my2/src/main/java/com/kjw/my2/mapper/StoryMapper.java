@@ -1,6 +1,7 @@
 package com.kjw.my2.mapper;
 
 
+import com.kjw.my2.domain.StoryCommentsVO;
 import com.kjw.my2.domain.StoryDTO;
 import com.kjw.my2.domain.StoryImgsVO;
 import com.kjw.my2.domain.StorysVO;
@@ -24,10 +25,22 @@ public interface StoryMapper {
     // 해당 아이디의 스토리 전체 데이터 갯수
     int totalMyStory(SearchCri cri);
 
+    // 스토리 디테일을 위한 스토리 하나 데이터 가져오기
+    StorysVO getStoryOne(StorysVO vo);
+
+    // 스토리 디테일을 위한 스토리 이미지 데이터 가져오기
+    List<String> getStoryImgs(StorysVO vo);
+
+    // 스토리 댓글 가져오기
+    List<StoryCommentsVO> getStoryCmt(StorysVO vo);
+
     // 스토리 등록
     int regStory(StorysVO vo);
 
     // 등록 직후 seq 조회
     int selectSeq(StorysVO vo);
+
+    // 댓글 등록
+    int regStcmt(StoryCommentsVO vo);
 
 }

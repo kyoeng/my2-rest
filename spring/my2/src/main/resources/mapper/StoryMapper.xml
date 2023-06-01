@@ -80,6 +80,33 @@
         where user_id = #{keyword}
     </select>
 
+
+    <!-- 스토리 디테일을 위한 데이터 가져오기 -->
+    <select id="getStoryOne" resultType="storysVO">
+        select *
+        from storys
+        where story_seq = #{storySeq}
+    </select>
+
+    <!-- 스토리 디테일을 위한 이미지 데이터 가져오기 -->
+    <select id="getStoryImgs" resultType="String">
+        select img_path
+        from story_imgs
+        where story_seq = #{storySeq}
+        order by story_seq, reg_date desc
+    </select>
+
+    <!-- 스토리 댓글 가져오기 -->
+    <select id="getStoryCmt" resultType="StoryCommentsVO">
+        select *
+        from story_comments
+        where story_seq = #{storySeq}
+        order by stcmt_seq, reg_date desc
+    </select>
+
+
+
+
     <!-- 스토리 등록 -->
     <insert id="regStory">
         insert into storys(user_id, story_title, story_area, story_content)
@@ -93,4 +120,10 @@
         order by reg_date desc
         limit 0, 1
     </select>
+
+    <!-- 댓글 등록 -->
+    <insert id="regStcmt">
+        insert into story_comments(story_seq, stcmt_content, user_id)
+        values (#{storySeq}, #{stcmtContent}, #{userId})
+    </insert>
 </mapper>

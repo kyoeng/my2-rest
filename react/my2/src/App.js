@@ -13,6 +13,7 @@ import Board from './screens/Board';
 import BoardDetail from './screens/BoardDetail';
 import RegStory from './screens/RegStory';
 import Story from './screens/Story';
+import StoryDetail from './screens/StoryDetail';
 
 function App() {
   // common css
@@ -87,6 +88,9 @@ function App() {
 
         {/* 스토리 */}
         <Route path='/story' element={<Story />} />
+
+        {/* 스토리 디테일 */}
+        <Route path='/story-detail/:seq' element={<StoryDetail />} />
       </Routes>
 
       <Footer />
