@@ -95,6 +95,16 @@ public class StoryServiceImpl implements StoryService {
         return storyMapper.getStoryCmt(vo);
     }
 
+    /**
+     * 스토리 클릭 시 view 증가
+     * @param vo StorysVO
+     * @return 성공 시 1, 실패 시 0
+     */
+    @Override
+    public int addView(StorysVO vo) {
+        return storyMapper.addView(vo);
+    }
+
 
 
 
@@ -130,5 +140,27 @@ public class StoryServiceImpl implements StoryService {
     @Override
     public int regStcmt(StoryCommentsVO vo) {
         return storyMapper.regStcmt(vo);
+    }
+
+
+    /**
+     * 스토리 Like 등록
+     * @param vo StorysVO
+     * @return 성공 시 1, 실패 시 0
+     */
+    @Override
+    public int regLike(StorysVO vo) {
+        return storyMapper.regLike(vo);
+    }
+
+
+    /**
+     * Like 정보 가져오기
+     * @param vo StorysVO
+     * @return int
+     */
+    @Override
+    public int getLike(StorysVO vo) {
+        return storyMapper.getLike(vo);
     }
 }

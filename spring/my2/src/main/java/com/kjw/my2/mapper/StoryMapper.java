@@ -34,6 +34,12 @@ public interface StoryMapper {
     // 스토리 댓글 가져오기
     List<StoryCommentsVO> getStoryCmt(StorysVO vo);
 
+    // 조회수 증가
+    int addView(StorysVO vo);
+
+
+
+
     // 스토리 등록
     int regStory(StorysVO vo);
 
@@ -42,5 +48,11 @@ public interface StoryMapper {
 
     // 댓글 등록
     int regStcmt(StoryCommentsVO vo);
+
+    // Like 등록
+    int regLike(StorysVO vo);
+
+    // Like가 있는지 가져오기
+    int getLike(StorysVO vo);
 
 }

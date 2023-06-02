@@ -28,6 +28,9 @@ export default function StoryDetail() {
     // 댓글 데이터를 위한 변수
     const [cmts, setCmts] = useState([]);
 
+    // Like에 대한 boolean 값
+    const [like, setLike] = useState(false);
+
     // 슬라이드를 위한 태그 참조
     const imgs = useRef([]);
 
@@ -53,7 +56,10 @@ export default function StoryDetail() {
         toSpringBoot({
             url: "/get-sdetail",
             method: "get",
-            params: { seq }
+            params: {
+                seq,
+                id: getCookie("id")
+            }
         }).then((res) => {
             if (res.status === 200 && res.data !== null) {
                 const imgs = [];
@@ -73,6 +79,9 @@ export default function StoryDetail() {
                 });
 
                 setCmts(res.data.cmts);
+
+                setLike(res.data.like);
+                console.log(res.data.like);
             } else {
                 console.log(res);
             }
@@ -170,6 +179,39 @@ export default function StoryDetail() {
     }
 
 
+    // like 버튼
+    function likeReq() {
+        if (like) return;   // like가 되어있으면 요청없이 바로 종료
+
+        toSpringWithToken({
+            url: "/reg-like",
+            method: "post",
+            data: {
+                userId: getCookie("id"),
+                storySeq: seq
+            }
+        }).then((res) => {
+            if (res.status === 200 && res.data) {
+                stReq(seq);
+            } else {
+                console.log(res);
+            }
+        }).catch((err) => {
+            if (err.code === "ERR_NETWORK") {
+                alert("로그인 후 이용해주세요.");
+                ScrollTop();
+                removeCookie("token");
+                removeCookie("id");
+                removeCookie("image");
+                navi("/login", { replace: true });
+            } else {
+                console.log(err);
+            }
+        });
+    }
+
+    console.log(like);
+
     return (
         <SD.SdContainer>
             <SD.SdTitle>
@@ -208,6 +250,20 @@ export default function StoryDetail() {
                 <SD.SdStoryContentTitle>내용</SD.SdStoryContentTitle>
                 {data.storyContent}
             </SD.SdStoryContentBox>
+
+            <SD.ViewLikeBox>
+                <SD.TextBox>
+                    view : {data.storyView}
+                </SD.TextBox>
+
+                <SD.TextBox>
+                    like : {data.storyLike}
+                </SD.TextBox>
+
+                <SD.LikeBtn onClick={likeReq} style={like ? { cursor: "default", backgroundColor: "#87CEFA", color: "white" } : {}}>
+                    LIKE
+                </SD.LikeBtn>
+            </SD.ViewLikeBox>
 
             <SD.CmtContainer>
                 <SD.CmtTitle>댓글</SD.CmtTitle>

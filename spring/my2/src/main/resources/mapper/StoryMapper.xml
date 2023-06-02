@@ -104,6 +104,19 @@
         order by stcmt_seq, reg_date desc
     </select>
 
+    <!-- view 증가 -->
+    <insert id="addView">
+        <selectKey keyProperty="storyView" resultType="int" order="BEFORE">
+            select story_view
+            from storys
+            where story_seq = #{storySeq}
+        </selectKey>
+
+        update storys
+        set story_view = (#{storyView} + 1)
+        where story_seq = #{storySeq}
+    </insert>
+
 
 
 
@@ -126,4 +139,16 @@
         insert into story_comments(story_seq, stcmt_content, user_id)
         values (#{storySeq}, #{stcmtContent}, #{userId})
     </insert>
+
+    <!-- Like 등록 -->
+    <select id="regLike" resultType="int">
+        select reg_like(#{storySeq}, #{userId})
+    </select>
+
+    <!-- Like 정보 가져오기 -->
+    <select id="getLike" resultType="int">
+        select count(*)
+        from st_like
+        where user_id = #{userId} and story_seq = #{storySeq}
+    </select>
 </mapper>

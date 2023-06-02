@@ -75,7 +75,7 @@ export default function MyPage() {
                         </St.StoryLikeView>
                     </St.StoryValue>
 
-                    <St.StoryLink to={``} />
+                    <St.StoryLink to={`/story-detail/${res.data.result[i].storySeq}`} onClick={ScrollTop} />
                 </St.StoryBox>
             );
         }

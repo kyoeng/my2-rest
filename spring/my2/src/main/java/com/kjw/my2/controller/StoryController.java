@@ -71,11 +71,21 @@ public class StoryController {
      * @return 스토리 디테일을 위한 데이터
      */
     @GetMapping("/get-sdetail")
-    public Map<String, Object> getStDetail(@RequestParam(value = "seq") int seq, StorysVO vo) {
+    public Map<String, Object> getStDetail(@RequestParam(value = "seq") int seq, @RequestParam(value = "id", required = false) String id, StorysVO vo) {
         // return할 Map 선언
         Map<String, Object> result = new HashMap<>();
         
         vo.setStorySeq(seq);    // 해당하는 seq로 setting
+
+        if (storyService.addView(vo) < 1) return null;          // 조회수 증가 ( 실패 시 바로 null )
+
+        // Like 상태를 위한 데이터 담기
+        if (id != null && !id.equals("")) {
+            vo.setUserId(id);
+            result.put("like", storyService.getLike(vo) > 0);
+        } else {
+            result.put("like", false);
+        }
 
         result.put("st", storyService.getStoryOne(vo));         // 스토리 테이블 데이터 담기
         result.put("imgs", storyService.getStoryImgs(vo));      // 이미지 경로 담기
@@ -180,6 +190,17 @@ public class StoryController {
     @PostMapping("/auth/reg-stcmt")
     public boolean regStcmt(@RequestBody StoryCommentsVO vo) {
         return storyService.regStcmt(vo) > 0;
+    }
+
+
+    /**
+     * 스토리 Like 등록을 위한 컨트롤러
+     * @param vo StorysVO
+     * @return boolean
+     */
+    @PostMapping("/auth/reg-like")
+    public boolean regLike(@RequestBody StorysVO vo) {
+        return storyService.regLike(vo) > 0;
     }
 
 }

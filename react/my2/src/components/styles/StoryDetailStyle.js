@@ -137,10 +137,57 @@ export const SdStoryContentTitle = styled.span`
 
 
 
+
+
+// view, like 부분
+export const ViewLikeBox = styled.div`
+    width: 100%;
+    height: 80px;
+    margin-top: 50px;
+    display: flex;
+    align-items: end;
+    gap: 10px;
+`
+
+export const TextBox = styled.div`
+    width: 100px;
+    height: 50px;
+    font-size: 1.8rem;
+    color: #00BFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+
+export const LikeBtn = styled.div`
+    width: 80px;
+    height: 100%;
+    border: 3px solid #87CEFA;
+    border-radius: 50%;
+    color: #00BFFF;
+    font-size: 2rem;
+    margin-left: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:hover {
+        cursor: pointer;
+        background-color: #87CEFA;
+        color: white;
+    }
+`
+
+
+
+
+
+
+
+
 // 댓글 부분
 export const CmtContainer = styled.div`
     width: 100%;
-    margin-top: 100px;
+    margin-top: 10px;
 `
 
 export const CmtTitle = styled.h3`
