@@ -6,11 +6,11 @@
         /* 검색 순서 지정 */
         <choose>
             <when test="type == 'l'.toString()">
-               story_view
+                story_like
             </when>
 
             <when test="type == 'v'.toString()">
-                story_like
+                story_view
             </when>
 
             <otherwise>
@@ -21,6 +21,27 @@
 
     <sql id="condition">
         /* 검색 조건 지정 */
+        <if test="keyword != null">
+            <bind name="kwd" value="'%'+keyword+'%'"/>
+        </if>
+
+        <choose>
+            <when test="type == 'i'.toString()">
+                and storys.user_id like #{kwd} and story_imgs.user_id like #{kwd}
+            </when>
+
+            <when test="type == 'a'.toString()">
+                and storys.story_area like #{kwd}
+            </when>
+
+            <otherwise>
+                /* 검색이 아닐 시 공백 처리 */
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="condiCount">
+        /* 검색 조건 지정 (갯수 검색용) */
         <if test="keyword != null">
             <bind name="kwd" value="'%'+keyword+'%'"/>
         </if>
@@ -70,7 +91,7 @@
     <select id="totalStory" resultType="int">
         select count(*)
         from storys
-        <include refid="condition" />
+        <include refid="condiCount" />
     </select>
     
     <!-- 마이페이지용 데이터 전체 갯수 -->
@@ -151,4 +172,11 @@
         from st_like
         where user_id = #{userId} and story_seq = #{storySeq}
     </select>
+
+    <!-- 스토리 삭제 -->
+    <delete id="delStory">
+        delete from storys
+        where story_seq = #{storySeq}
+            and user_id = #{userId}
+    </delete>
 </mapper>

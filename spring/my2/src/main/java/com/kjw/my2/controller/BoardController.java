@@ -133,4 +133,15 @@ public class BoardController {
         return boardService.regiCmt(vo) > 0;
     }
 
+
+    /**
+     * 자유게시판 삭제를 위한 컨트롤러
+     * @param vo FreeBoardVO
+     * @return Boolean
+     */
+    @DeleteMapping("/auth/del-free")
+    public boolean delFree(@RequestBody FreeBoardVO vo) {
+        return boardService.delFree(vo) > 0;
+    }
+
 }

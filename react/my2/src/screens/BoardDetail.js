@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import * as De from "../components/styles/BoardDetailStyle";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "../components/styles/Loader.css";
 import { forTokenCheckReq, toSpringBoot, toSpringWithToken } from "../components/commons/Axioses";
 import { getCookie } from "../components/commons/Cookie";
@@ -24,6 +24,8 @@ export default function BoardDetail() {
 
     // 댓글 작성 textarea 내용을 위한 변수
     const [comments, setComments] = useState("");
+
+    const navi = useNavigate();
 
     const loader = useRef();        // 로딩 화면
 
@@ -94,6 +96,32 @@ export default function BoardDetail() {
     }
 
 
+    // 삭제하기
+    function delBoard() {
+        if (window.confirm("삭제하시겠습니까?")) {
+            toSpringWithToken({
+                url: "/del-free",
+                method: "delete",
+                data: {
+                    freeSeq: seq,
+                    userId: getCookie("id")
+                }
+            }).then((res) => {
+                if (res.status === 200 && res.data) {
+                    alert("삭제되었습니다.");
+                    navi("/board", { replace: true });
+                } else {
+                    console.log(res);
+                }
+            }).catch((err) => {
+                console.log(err);
+            });
+        } else {
+            return
+        }
+    }
+
+
 
 
     return (
@@ -103,6 +131,11 @@ export default function BoardDetail() {
                 <De.DetailTitleInfo>
                     {detail.userId}님의 글
                 </De.DetailTitleInfo>
+
+                <De.DelBtn onClick={delBoard}
+                    style={detail.userId === getCookie("id") ? { display: "block" } : { display: "none" }}>
+                    삭제하기
+                </De.DelBtn>
             </De.DetailTitle>
 
 

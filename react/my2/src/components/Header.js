@@ -9,11 +9,9 @@ const Header = () => {
     const MenuBtn = useRef();                           // 메뉴 버튼에 대한 변수
     const Menu = useRef();                              // 메뉴창에 대한 변수
     const LoginedMenu = useRef();                       // 로그인 후 아코디언 메뉴
-    const Search = useRef();                            // 검색창에 대한 변수
 
     const [menuOnoff, setMenuOnoff] = useState(false);          // 메뉴 팝업이 나오고 안나오고를 결정할 변수
     const [loginedOnoff, setLoginedOnoff] = useState(false);    // 로그인 후 아코디언 메뉴를 나타내기를 결정할 변수
-    const [searchOnoff, setSearchOnoff] = useState(false);      // 검색 팝업이 나오고 안나오고를 결정할 변수
     const [resize, setResize] = useState(window.innerWidth);    // 브라우저 너비 저장할 변수
 
     // 로그인 상태 여부에 관한 변수
@@ -141,24 +139,6 @@ const Header = () => {
 
 
 
-    // 검색창 이벤트 ====
-    function onoffSearch() {
-        if (searchOnoff) {
-            // 닫히는 이벤트
-            Search.current.style.visibility = 'hidden';
-            Search.current.style.opacity = '0';
-
-        } else {
-            // 열리는 이벤트
-            Search.current.style.visibility = 'visible';
-            Search.current.style.opacity = '1';
-        }
-
-        setSearchOnoff(!searchOnoff);
-    }
-
-
-
 
     return (
         <Head.HeaderContainer>
@@ -179,8 +159,6 @@ const Header = () => {
 
                 {/* 검색 및 로그인 버튼 부분 */}
                 <Head.SearchLoginBox>
-                    <Head.SearchBtn onClick={onoffSearch} />
-
                     <Head.LoginBtn style={login ? { background: "none", backgroundColor: "white", borderRadius: "50%" } : {}}>
                         <Head.NonePosiLink to="/login" onClick={ScrollTop}
                             style={login ? { display: "none" } : { display: "block" }} />
@@ -228,25 +206,6 @@ const Header = () => {
 
                 <Head.LogoutBtn onClick={logoutBtnEvent}>로그아웃</Head.LogoutBtn>
             </Head.LoginedMenuContainer>
-
-
-
-            {/* 검색창 */}
-            <Head.SearchContainer ref={Search}>
-                <Head.SearchArea>
-                    <Head.SearchAreaLogoBox>
-                        MY2
-                        <Head.PositionLink to="/" onClick={ScrollTop} />
-                    </Head.SearchAreaLogoBox>
-
-                    <Head.SearchAreaPostBox>
-                        <Head.SearchAreaInput placeholder="검색어를 입력하세요" />
-                        <Head.SearchAreaSubmit />
-                    </Head.SearchAreaPostBox>
-
-                    <Head.SearchAreaClose onClick={onoffSearch} />
-                </Head.SearchArea>
-            </Head.SearchContainer>
         </Head.HeaderContainer>
     );
 

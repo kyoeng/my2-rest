@@ -203,4 +203,15 @@ public class StoryController {
         return storyService.regLike(vo) > 0;
     }
 
+
+    /**
+     * 스토리 삭제를 위한 컨트롤러
+     * @param vo StorysVO
+     * @return boolean
+     */
+    @DeleteMapping("/auth/del-story")
+    public boolean delStory(@RequestBody StorysVO vo) {
+        return storyService.delStory(vo) > 0;
+    }
+
 }

@@ -90,4 +90,11 @@
         insert into comments(free_seq, cmt_content, user_id)
         value(#{freeSeq}, #{cmtContent}, #{userId})
     </insert>
+
+    <!-- 자유게시판 삭제 -->
+    <delete id="delFree">
+        delete from free_board
+        where free_seq = #{freeSeq}
+            and user_id = #{userId}
+    </delete>
 </mapper>

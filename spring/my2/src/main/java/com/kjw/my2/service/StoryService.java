@@ -50,4 +50,7 @@ public interface StoryService {
     // Like가 있는지 가져오기
     int getLike(StorysVO vo);
 
+    // 스토리 삭제
+    int delStory(StorysVO vo);
+
 }

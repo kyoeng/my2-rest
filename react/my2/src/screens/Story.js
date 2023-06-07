@@ -17,11 +17,15 @@ const Story = () => {
     const viewSelect = useRef();    // 뷰 결정 select 태그 참조
     const loading = useRef([]);     // 로딩 화면 참조
     const moreView = useRef();      // 더 보기 버튼 참조
+    const [pageMaker, setPageMaker] = useState();       // pageMaker
+
+    const searchT = useRef();       // 검색 타입
+    const [searchInput, setSearchInput] = useState("");     // 검색 input 값
 
     const page = useRef(1);     // 페이지 번호
 
 
-    
+
 
 
     // 스토리에 대한 뷰를 만들어주는 함수
@@ -77,6 +81,7 @@ const Story = () => {
                 const views = viewFactory(res);
                 page.current++;
                 setStorys(views);
+                setPageMaker(res.data.pageMaker);
 
                 loading.current[0].style.display = "none";
             } else {
@@ -90,8 +95,32 @@ const Story = () => {
 
 
     // 뷰 결정짓는 select 태그 change 함수
-    function ChangeView() {
-        console.log(viewSelect.current.value);
+    function changeView() {
+        toSpringBoot({
+            url: "/get-storys",
+            method: "get",
+            params: {
+                type: viewSelect.current.value
+            }
+        }).then((res) => {
+            if (res.status === 200) {
+                const views = viewFactory(res);
+                page.current = 1;
+                setStorys(views);
+                setPageMaker(res.data.pageMaker);
+
+                if (res.data.pageMaker.endPageNum !== page.current) {
+                    page.current++;
+                    moreView.current.style.display = "block";
+                } else {
+                    moreView.current.style.display = "none";
+                }
+            } else {
+                console.log(res);
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
     }
 
 
@@ -105,7 +134,8 @@ const Story = () => {
             url: "/get-storys",
             params: {
                 "currentPage": page.current,
-                "type": viewSelect.current.value
+                "type": pageMaker.type,
+                "keyword": pageMaker.keyword
             }
         }).then((res) => {
             if (res.status === 200) {
@@ -130,15 +160,69 @@ const Story = () => {
     }
 
 
+
+    // 검색하기
+    function searchReq() {
+        if (searchInput === "") return
+
+
+
+        toSpringBoot({
+            method: "get",
+            url: "/get-storys",
+            params: {
+                "type": searchT.current.value,
+                "keyword": searchInput
+            }
+        }).then((res) => {
+            if (res.status === 200) {
+                const views = viewFactory(res);
+                page.current = 1;
+                setStorys(views);
+                setPageMaker(res.data.pageMaker);
+
+                if (res.data.pageMaker.endPageNum !== page.current) {
+                    page.current++;
+                    moreView.current.style.display = "block";
+                } else {
+                    moreView.current.style.display = "none";
+                }
+            } else {
+                console.log(res);
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
+
+
+
+
+
     return (
         <St.StoryContainer>
             <St.StoryTitle>S T O R Y</St.StoryTitle>
             <St.StoryRegBtn to={login ? "/regi-story" : "/login"} onClick={ScrollTop}>스토리 작성</St.StoryRegBtn>
-            <St.StoryTypeBox ref={viewSelect} onChange={ChangeView}>
+
+            <St.StoryTypeBox ref={viewSelect} onChange={changeView}>
                 <option value="">최신 순</option>
                 <option value="l">좋아요 순</option>
                 <option value="v">조회수 순</option>
             </St.StoryTypeBox>
+
+            <St.SearchContainer>
+                <St.SearchType ref={searchT}>
+                    <option value="i">아이디</option>
+                    <option value="a">지역</option>
+                </St.SearchType>
+
+                <St.SearchInput placeholder="검색어를 입력해주세요." type="text"
+                    value={searchInput} onChange={(e) => setSearchInput(e.target.value)} />
+
+                <St.SearchBtn onClick={searchReq}>
+                    검색
+                </St.SearchBtn>
+            </St.SearchContainer>
 
             <St.StoryContentContainer>
                 <div className="storyLoader" style={{ display: "block", height: "500px" }} ref={(e) => loading.current[0] = e}>

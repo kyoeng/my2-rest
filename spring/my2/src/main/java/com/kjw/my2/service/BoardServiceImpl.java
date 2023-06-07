@@ -113,4 +113,15 @@ public class BoardServiceImpl implements BoardService {
     public int regiCmt(CommentsVO vo) {
         return boardMapper.regiCmt(vo);
     }
+
+
+    /**
+     * 자유게시판 삭제
+     * @param vo FreeBoardVO
+     * @return 성공 시 1, 실패 시 0
+     */
+    @Override
+    public int delFree(FreeBoardVO vo) {
+        return boardMapper.delFree(vo);
+    }
 }

@@ -157,10 +157,21 @@ public class StoryServiceImpl implements StoryService {
     /**
      * Like 정보 가져오기
      * @param vo StorysVO
-     * @return int
+     * @return 성공 시 1, 실패 시 0
      */
     @Override
     public int getLike(StorysVO vo) {
         return storyMapper.getLike(vo);
+    }
+
+
+    /**
+     * 스토리 삭제
+     * @param vo StorysVO
+     * @return 성공 시 1, 실패 시 0
+     */
+    @Override
+    public int delStory(StorysVO vo) {
+        return storyMapper.delStory(vo);
     }
 }

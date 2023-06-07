@@ -5,6 +5,7 @@ import styled from "styled-components";
 export const SdContainer = styled.div`
     width: 800px;
     margin: 130px auto 0;
+    position: relative;
 `
 
 export const SdTitle = styled.h2`
@@ -262,5 +263,21 @@ export const CmtRegBtn = styled.button`
     &:hover {
         cursor: pointer;
         opacity: 0.5;
+    }
+`
+
+
+export const DelBtn = styled.button`
+    width: 100px;
+    height: 40px;
+    background-color: #87CEFA;
+    color: white;
+    position: absolute;
+    right: 0;
+    top: -40px;
+    font-size: 1.5rem;
+    &:hover {
+        cursor: pointer;
+        opacity: 0.7;
     }
 `

@@ -210,7 +210,36 @@ export default function StoryDetail() {
         });
     }
 
-    console.log(like);
+
+
+    // 삭제하기 버튼
+    function delReq() {
+        if (window.confirm("삭제하시겠습니까?")) {
+            toSpringWithToken({
+                url: "/del-story",
+                method: "delete",
+                data: {
+                    storySeq: seq,
+                    userId: getCookie("id")
+                }
+            }).then((res) => {
+                if (res.status === 200 && res.data) {
+                    alert("삭제되었습니다.");
+                    navi("/story", { replace: true });
+                } else {
+                    console.log(res);
+                }
+            }).catch((err) => {
+                console.log(err);
+            });
+        } else {
+            return
+        }
+    }
+
+
+
+
 
     return (
         <SD.SdContainer>
@@ -285,6 +314,11 @@ export default function StoryDetail() {
                     <SD.CmtRegBtn onClick={regCmt}>등록</SD.CmtRegBtn>
                 </SD.CmtRegBox>
             </SD.CmtContainer>
+
+            <SD.DelBtn onClick={delReq}
+                style={data.userId === getCookie("id") ? { display: "block" } : { display: "none" }}>
+                삭제하기
+            </SD.DelBtn>
         </SD.SdContainer>
     );
 

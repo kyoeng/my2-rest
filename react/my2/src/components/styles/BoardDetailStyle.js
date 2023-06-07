@@ -20,6 +20,7 @@ export const DetailTitle = styled.h2`
     border-bottom: 3px solid #87CEFA;
     padding-left: 10px;
     display: flex;
+    position: relative;
 `
 
 // 디테일 타이틀 글 정보
@@ -159,5 +160,21 @@ export const CommentsRegBtn = styled.button`
     &:hover {
         cursor: pointer;
         opacity: 0.5;
+    }
+`
+
+
+export const DelBtn = styled.button`
+    width: 100px;
+    height: 40px;
+    background-color: #87CEFA;
+    color: white;
+    position: absolute;
+    right: 0;
+    top: -40px;
+    font-size: 1.5rem;
+    &:hover {
+        cursor: pointer;
+        opacity: 0.7;
     }
 `

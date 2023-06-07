@@ -56,6 +56,43 @@ export const StoryTypeBox = styled.select`
 `
 
 
+// 스토리 검색 버튼
+export const SearchContainer = styled.div`
+    width: 100%;
+    height: 55px;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+`
+
+export const SearchType = styled.select`
+    width: 100px;
+    height: 100%;
+    border: 3px solid #87CEFA;
+    color: #00BFFF;
+    padding-left: 10px;
+`
+
+export const SearchInput = styled.input`
+    width: 600px;
+    height: 100%;
+    padding-left: 20px;
+    border: 3px solid #87CEFA;
+    font-size: 1.5rem;
+`
+
+export const SearchBtn = styled.button`
+    width: 100px;
+    height: 100%;
+    background-color: #87CEFA;
+    color: white;
+    font-size: 1.7rem;
+    &:hover {
+        cursor: pointer;
+        opacity: 0.7;
+    }
+`
 
 
 

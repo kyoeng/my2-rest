@@ -44,4 +44,7 @@ public interface BoardMapper {
     // 댓글 등록
     int regiCmt(CommentsVO vo);
 
+    // 자유게시판 삭제
+    int delFree(FreeBoardVO vo);
+
 }
